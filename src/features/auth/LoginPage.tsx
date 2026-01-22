@@ -28,8 +28,8 @@ const LoginPage = () => {
     const [registerMessage, setRegisterMessage] = useState('');
     const [isSuccessRegister, setIsSuccessRegister] = useState(true);
 
-    const [emailLogin, setEmailLogin] = useState('wph034@wphlatihan.com');
-    const [passwordLogin, setPasswordLogin] = useState('Wph034Juara2026');
+    const [emailLogin, setEmailLogin] = useState('');
+    const [passwordLogin, setPasswordLogin] = useState('');
     const [loginErrMessage, setLoginErrMessage] = useState('');
 
     const { mutate: mutateRegister, isPending: isPendingRegister } = useRegister();
@@ -323,11 +323,3 @@ const LoginPage = () => {
 }
 
 export default LoginPage;
-
-/* 
-Gunakan ini untuk login
-Name: WPH-034
-Email: wph034@wphlatihan.com
-Number: 08198029725
-Password: Wph034Juara2026
-*/

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import ButtonLink from "./ButtonLink";
 import { useAppSelector } from "../services/api/redux";
+import { FaBagShopping } from "react-icons/fa6";
 
 interface INavigation {
     changeOnScroll: boolean;
@@ -66,6 +67,10 @@ const Navigation = ({ changeOnScroll }: INavigation) => {
                                 <div className={` flex items-center font-semibold
                                 ${!isScrolled ? ('text-white') : (' text-black')}
                                 `}>
+                                    <a href="#" className="mr-3 flex relative pr-3">
+                                        <FaBagShopping className="text-4xl" />
+                                        <span id="cartcounter" className="bg-red-500 text-white rounded-full text-center h-[24px] w-[24px] absolute right-0">0</span>
+                                    </a>
                                     <img src={authState.avatar ?? './src/assets/tmp-img.png'} alt="Avatar" className="w-[48px] rounded-full mr-2" />
                                     <span>{authState.userName}</span>
                                 </div>
