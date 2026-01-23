@@ -6,7 +6,7 @@ interface IButtonLinkProps {
     id?: string;
 }
 
-const ButtonLink = ({id, type, href, className, children}: IButtonLinkProps) => {
+const ButtonCustomLink = ({id, type, href, className, children}: IButtonLinkProps) => {
     return (
         <a id={id} type={type} href={href} className={`${className}`}>
             {children}
@@ -14,4 +14,4 @@ const ButtonLink = ({id, type, href, className, children}: IButtonLinkProps) => 
     )
 }
 
-export default ButtonLink;
+export default ButtonCustomLink;

@@ -10,7 +10,7 @@ interface IInpputProps {
     value?: string;
 }
 
-const Input = ({ id, name, placeholder, type, value, className, onChange }: IInpputProps) => {
+const InputCustom = ({ id, name, placeholder, type, value, className, onChange }: IInpputProps) => {
     return (
         <input
             id={id}
@@ -23,4 +23,4 @@ const Input = ({ id, name, placeholder, type, value, className, onChange }: IInp
     )
 }
 
-export default Input;
+export default InputCustom;

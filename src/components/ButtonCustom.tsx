@@ -8,7 +8,7 @@ interface IButtonProps {
     disabled?: boolean;
 }
 
-const Button = ({id, name, type, onClick, className, children, disabled}: IButtonProps) => {
+const ButtonCustom = ({id, name, type, onClick, className, children, disabled}: IButtonProps) => {
     return (
         <button disabled={disabled} id={id} name={name} type={type} onClick={onClick} className={`px-12 py-2  ${className}`}>
             {children}
@@ -16,4 +16,4 @@ const Button = ({id, name, type, onClick, className, children, disabled}: IButto
     )
 }
 
-export default Button;
+export default ButtonCustom;

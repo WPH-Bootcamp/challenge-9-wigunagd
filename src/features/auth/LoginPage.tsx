@@ -1,7 +1,7 @@
 import { useEffect, useState, type FormEvent } from "react";
-import Button from "../../component/Button";
-import Input from "../../component/Input";
-import Checkbox from "../../component/Checkbox";
+import ButtonCustom from "../../components/ButtonCustom";
+import InputCustom from "../../components/InputCustom";
+import CheckboxCustom from "../../components/CheckboxCustom";
 import { useRegister } from "./hooksRegister";
 import { useLogin } from "./hooksLogin";
 import { useNavigate } from "react-router-dom";
@@ -178,24 +178,24 @@ const LoginPage = () => {
 
                     <div id="buttonselectdiv"
                         className="grid grid-cols-2 gap-2 w-full rounded-lg bg-neutral-100 p-2 mb-2 justify-arround">
-                        <Button onClick={handleOnClickSignIn}
+                        <ButtonCustom onClick={handleOnClickSignIn}
                             id="btnsignintab" name="btnsignintab"
                             type="button"
-                            className={`rounded-md ${isSelectSignIn ? 'bg-white font-bold' : 'bg-neutral-100'} `}>Sign in</Button>
+                            className={`rounded-md ${isSelectSignIn ? 'bg-white font-bold' : 'bg-neutral-100'} `}>Sign in</ButtonCustom>
 
-                        <Button
+                        <ButtonCustom
                             onClick={handleOnClickSignIn}
                             id="btnsignuptab"
                             name="btnsignuptab"
                             type="button"
-                            className={`rounded-md ${isSelectSignIn ? 'bg-neutral-100' : 'bg-white font-bold'} `}>Sign up</Button>
+                            className={`rounded-md ${isSelectSignIn ? 'bg-neutral-100' : 'bg-white font-bold'} `}>Sign up</ButtonCustom>
                     </div>
 
                     {
                         isSelectSignIn && (
                             <div id="logindiv" className="grid grid-cols-1">
                                 <form method="POST" onSubmit={handleSubmitLogin}>
-                                    <Input
+                                    <InputCustom
                                         id="emaillogin"
                                         name="emaillogin"
                                         type="email"
@@ -204,7 +204,7 @@ const LoginPage = () => {
                                         onChange={(e) => handleEmailLogin(e.target.value)}
                                         className="my-3" />
 
-                                    <Input
+                                    <InputCustom
                                         id="passwordlogin"
                                         name="passwordlogin"
                                         type="password"
@@ -213,22 +213,22 @@ const LoginPage = () => {
                                         onChange={(e) => handlePasswordLogin(e.target.value)}
                                         className="my-3" />
 
-                                    <Checkbox
+                                    <CheckboxCustom
                                         id="chkrememberme"
                                         name="chkrememberme"
                                         label="Remember Me"
                                         className="my-3"
                                     />
 
-                                    <Button
+                                    <ButtonCustom
                                         disabled={isPendingLogin}
                                         id="btnlogin"
                                         name="btnlogin"
                                         type="submit"
-                                        className="bg-red-700 w-full text-white mt-3 rounded-3xl"
-                                    >Login</Button>
+                                        className="bg-primary w-full text-white mt-3 rounded-3xl"
+                                    >Login</ButtonCustom>
 
-                                    <p className={`text-red-700 text-sm mt-2 text-center font-medium`}>
+                                    <p className={`text-danger text-sm mt-2 text-center font-medium`}>
                                         {loginErrMessage}
                                     </p>
                                 </form>
@@ -240,7 +240,7 @@ const LoginPage = () => {
                         !isSelectSignIn && (
                             <div id="registerdiv" className="grid grid-cols-1">
                                 <form method="POST" onSubmit={handleSubmitRegister}>
-                                    <Input
+                                    <InputCustom
                                         id="nameregister"
                                         name="nameregister"
                                         type="text"
@@ -248,11 +248,11 @@ const LoginPage = () => {
                                         placeholder="Name"
                                         onChange={(e) => handleNameRegister(e.target.value)}
                                         className="my-1" />
-                                    <p className={`text-red-700 text-xs`}>
+                                    <p className={`text-danger text-xs`}>
                                         {nameRegisterError}
                                     </p>
 
-                                    <Input
+                                    <InputCustom
                                         id="emailregister"
                                         name="emailregister"
                                         type="email"
@@ -260,11 +260,11 @@ const LoginPage = () => {
                                         placeholder="Email"
                                         onChange={(e) => handleEmailRegister(e.target.value)}
                                         className="my-1" />
-                                    <p className={`text-red-700 text-xs`}>
+                                    <p className={`text-danger text-xs`}>
                                         {emailRegisterError}
                                     </p>
 
-                                    <Input
+                                    <InputCustom
                                         id="numberphoneregister"
                                         name="numberphoneregister"
                                         type="tel"
@@ -272,11 +272,11 @@ const LoginPage = () => {
                                         placeholder="Number Phone"
                                         onChange={(e) => handleNumberPhoneRegister(e.target.value)}
                                         className="my-1" />
-                                    <p className={`text-red-700 text-xs`}>
+                                    <p className={`text-danger text-xs`}>
                                         {numberPhoneRegisterError}
                                     </p>
 
-                                    <Input
+                                    <InputCustom
                                         id="passwordregister"
                                         name="passwordregister"
                                         type="password"
@@ -284,11 +284,11 @@ const LoginPage = () => {
                                         placeholder="Password"
                                         onChange={(e) => handlePasswordRegister(e.target.value)}
                                         className="my-1" />
-                                    <p className={`text-red-700 text-xs`}>
+                                    <p className={`text-danger text-xs`}>
                                         {passwordRegisterError}
                                     </p>
 
-                                    <Input
+                                    <InputCustom
                                         id="confirmpasswordregister"
                                         name="confirmpasswordregister"
                                         type="password"
@@ -296,19 +296,19 @@ const LoginPage = () => {
                                         placeholder="Confirm Password"
                                         onChange={(e) => handleConfirmPasswordRegister(e.target.value)}
                                         className="my-1" />
-                                    <p className={`text-red-700 text-xs`}>
+                                    <p className={`text-danger text-xs`}>
                                         {passwordRegisterError}
                                     </p>
 
-                                    <Button
+                                    <ButtonCustom
                                         disabled={isPendingRegister}
                                         id="btnregister"
                                         name="btnregister"
                                         type="submit"
-                                        className="bg-red-700 w-full text-white mt-3 rounded-3xl"
-                                    >Register</Button>
+                                        className="bg-primary w-full text-white mt-3 rounded-3xl"
+                                    >Register</ButtonCustom>
 
-                                    <p className={` ${isSuccessRegister ? 'text-green-700' : 'text-red-700'} text-sm mt-2 text-center font-medium`}>
+                                    <p className={` ${isSuccessRegister ? 'text-success' : 'text-danger'} text-sm mt-2 text-center font-medium`}>
                                         {registerMessage}
                                     </p>
                                 </form>

@@ -7,7 +7,7 @@ interface ICheckboxProps {
     checked?: boolean;
 }
 
-const Checkbox = ({ id, name, label, className, onChange, checked }: ICheckboxProps) => {
+const CheckboxCustom = ({ id, name, label, className, onChange, checked }: ICheckboxProps) => {
     return (
         <div className="flex items-center gap-2">
             <input
@@ -25,4 +25,4 @@ const Checkbox = ({ id, name, label, className, onChange, checked }: ICheckboxPr
     )
 }
 
-export default Checkbox;
+export default CheckboxCustom;
