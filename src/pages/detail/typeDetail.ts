@@ -1,4 +1,11 @@
 // type untuk detail restaurant
+
+export interface IDetailParams{
+  id: string;
+  limitMenu?: number;
+  limitReview?: number
+}
+
 export interface Coordinates {
   lat: number;
   long: number;

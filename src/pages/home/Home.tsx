@@ -5,6 +5,7 @@ import NavigationMenu from "../../components/NavigationMenu";
 import { useGetRestaurant } from "./hooksHome";
 import type { RestaurantResponse, Restaurant } from "./typeHome";
 import { Card, CardContent } from "@/components/ui/card"
+import { RestaurantDisplayCard } from "@/components/RestaurantDisplayCard";
 
 const MainPage = () => {
 
@@ -106,15 +107,14 @@ const MainPage = () => {
                                                 <CardContent className="py-2">
                                                     <div className="flex">
 
-                                                        <div className="w-[120px] h-[120px] flex items-center">
-                                                            <img src={r.logo} alt={r.name} className="w-full" />
-                                                        </div>
+                                                        <RestaurantDisplayCard
+                                                            logo={r.logo}
+                                                            name={r.name}
+                                                            star={r.star}
+                                                            place={r.place}
+                                                            distance={r.distance}
+                                                        />
 
-                                                        <div className="flex flex-col justify-center ml-5">
-                                                            <h4 className="font-bold text-lg">{r.name}</h4>
-                                                            <p className="flex items-center"><img width="24" className="mr-1" src="src/assets/Star.svg" alt={`Rating ${r.star}`} />{r.star}</p>
-                                                            <p>{r.place} {`${r.distance !== undefined ? `${r.distance} Km` : ''}`}</p>
-                                                        </div>
                                                     </div>
                                                 </CardContent>
                                             </Card>

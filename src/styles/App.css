@@ -1,5 +1,7 @@
 :root {
   --primary-100: #C12116; 
+  --primary-50: #c1211632; 
+  --neutral: #D5D7DA; 
   --danger: #9b1d14; 
   --accent-red: #D9206E; 
   --accent-green: #079455;
@@ -21,4 +23,11 @@
 
 .bg-primary {
   background-color: var(--primary-100);
+}
+.bg-primary-outline {
+  background-color: var(--primary-50);
+}
+
+.bg-neutral {
+  background-color: var(--neutral);
 }
