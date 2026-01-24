@@ -27,12 +27,13 @@ export const MenuCard = ({ cartItemId, menuId, menuName, menuPrice, menuType, qt
     }, [qtyinCart]);
 
     const handleItemQty = (increment: 1 | -1) => {
-        setItemQty(itemQty + increment);
+        const newQty = itemQty + increment;
+        setItemQty(newQty);
 
         if (itemQty >= 0) {
             mutateUpdate({
                 cartItemId: cartItemId,
-                quantity: itemQty
+                quantity: newQty
             }, {
                 onError: () => {
                     const itemInCart = cartCountState.itemsInCart.find(item => item.menu.id === cartItemId);
@@ -43,7 +44,7 @@ export const MenuCard = ({ cartItemId, menuId, menuName, menuPrice, menuType, qt
     }
 
     return (
-        <Card className={`
+        <Card id={cartItemId.toString()} className={`
             p-0 flex flex-col h-full /* 1. Force full height & flex column */
             ${(selectedCategoryState === "" || selectedCategoryState === menuType) ? 'block' : 'hidden'}
         `}>

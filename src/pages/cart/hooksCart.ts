@@ -10,6 +10,7 @@ export const useAddCartItem = () => {
         mutationFn: (body) => addCartItem(body),
         onSuccess: (response: IAddCartResponse) => {
             queryClient.invalidateQueries({ queryKey: ['cart'] });
+
             toast.success(`${response.data.cartItem.menu.foodName} added`);
         }
     });
@@ -19,9 +20,8 @@ export const useUpdateCartItem = () => {
     const queryClient = useQueryClient();
     return useMutation<IAddCartResponse, AxiosError, IAddCartItem>({
         mutationFn: (body) => updateCartItem(body),
-        onSuccess: (response) => {
+        onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['cart'] });
-            console.log(response, 'Update Qty');
         },
         onError: () => {
             queryClient.invalidateQueries({ queryKey: ['cart'] });
