@@ -65,8 +65,6 @@ const Detail = () => {
 
     const cartCountState = useAppSelector((cartState) => cartState.cartCount);
 
-    console.log(cartCountState.itemsInCart, 'Semua isi cart');
-
     return (
         <>
             <NavigationMenu changeOnScroll={false} />

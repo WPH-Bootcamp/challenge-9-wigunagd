@@ -3,6 +3,7 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Button } from "./ui/button";
 import { useEffect, useState } from "react";
 import { useUpdateCartItem } from "@/pages/cart/hooksCart";
+import { useAppSelector } from "@/services/api/redux";
 
 interface IMenuCardProps {
     cartItemId: number;
@@ -19,6 +20,7 @@ interface IMenuCardProps {
 export const MenuCard = ({ cartItemId, menuId, menuName, menuPrice, menuType, qtyinCart, menuImage, selectedCategoryState, buttonOnAddFunc }: IMenuCardProps) => {
     const [itemQty, setItemQty] = useState(qtyinCart);
     const { mutate: mutateUpdate } = useUpdateCartItem();
+    const cartCountState = useAppSelector((cartState) => cartState.cartCount);
 
     useEffect(() => {
         setItemQty(qtyinCart);
@@ -27,10 +29,15 @@ export const MenuCard = ({ cartItemId, menuId, menuName, menuPrice, menuType, qt
     const handleItemQty = (increment: 1 | -1) => {
         setItemQty(itemQty + increment);
 
-        if(itemQty>=0){
+        if (itemQty >= 0) {
             mutateUpdate({
                 cartItemId: cartItemId,
                 quantity: itemQty
+            }, {
+                onError: () => {
+                    const itemInCart = cartCountState.itemsInCart.find(item => item.menu.id === cartItemId);
+                    setItemQty(itemInCart?.quantity ?? qtyinCart);
+                }
             });
         }
     }
@@ -56,7 +63,7 @@ export const MenuCard = ({ cartItemId, menuId, menuName, menuPrice, menuType, qt
                 <div className="md:w-1/2 w-full flex md:justify-end">
                     {itemQty === 0 && (
                         <Button
-                        id="btnadddesktop"
+                            id="btnadddesktop"
                             onClick={buttonOnAddFunc}
                             className="rounded-full w-full md:max-w-[79px] md:right-0"
                             value={menuId}

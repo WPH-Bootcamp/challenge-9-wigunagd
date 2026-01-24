@@ -11,7 +11,7 @@ export const addCartItem = async ({ restaurantId, menuId, quantity }: IAddCartIt
 }
 
 export const updateCartItem = async ({ cartItemId, quantity }: IAddCartItem) => {
-    const response = await apiAxios.post(`/api/cart/${cartItemId}`, {
+    const response = await apiAxios.put(`/api/cart/${cartItemId}`, {
         quantity: quantity
     });
     return response.data;

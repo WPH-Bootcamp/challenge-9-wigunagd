@@ -10,7 +10,6 @@ export const useAddCartItem = () => {
         mutationFn: (body) => addCartItem(body),
         onSuccess: (response: IAddCartResponse) => {
             queryClient.invalidateQueries({ queryKey: ['cart'] });
-
             toast.success(`${response.data.cartItem.menu.foodName} added`);
         }
     });
@@ -22,10 +21,11 @@ export const useUpdateCartItem = () => {
         mutationFn: (body) => updateCartItem(body),
         onSuccess: (response) => {
             queryClient.invalidateQueries({ queryKey: ['cart'] });
-            console.log(response, 'Use Update');
+            console.log(response, 'Update Qty');
         },
-        onError: (e) => {
-            console.log(e, 'Error update');
+        onError: () => {
+            queryClient.invalidateQueries({ queryKey: ['cart'] });
+            toast.error("Failed to update the cart");
         }
     });
 }
