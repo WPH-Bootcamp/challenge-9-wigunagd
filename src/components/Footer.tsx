@@ -1,6 +1,10 @@
 import { baseURLVar } from "../BaseUrlVar";
 
-const Footer = () => {
+interface FooterProps {
+    className?: string
+}
+
+const Footer = ({className}: FooterProps) => {
     const socialarr = [
         {
             id: "Facebook",
@@ -73,7 +77,7 @@ const Footer = () => {
 
 
     return (
-        <footer className="bg-[#0A0D12] py-15 text-white flex items-center">
+        <footer className={`bg-[#0A0D12] py-15 text-white flex items-center ${className}`}>
             <div id="footercontent" className="flex flex-col md:flex-row w-full md:max-w-[1440px] mx-auto md:px-0">
 
                 <div id="div1" className="w-full md:w-1/2 p-4">

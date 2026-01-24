@@ -155,11 +155,11 @@ const Detail = () => {
 
                         {!isLoadingData && (
                             <RestaurantDisplayCard
-                                logo={detailData?.data.logo}
-                                name={detailData?.data.name}
-                                star={detailData?.data.star}
-                                place={detailData?.data.place}
-                                distance={detailData?.data.distance}
+                                logo={detailData?.data.logo ?? ""}
+                                name={detailData?.data.name ?? ""}
+                                star={detailData?.data.star ?? 1}
+                                place={detailData?.data.place ?? ""}
+                                distance={detailData?.data.distance ?? 0}
                             />
                         )}
 
@@ -174,15 +174,14 @@ const Detail = () => {
                         {
                             menuCategory.map(c => (
                                 <Button
-                                    className="mr-2"
+                                    className="mr-2 h-[40px]"
                                     onClick={() => { setSelectedCategory(c.filterVal); }}
                                     variant={`${selectedCategory === c.filterVal ? 'outlineDefault' : 'outlineborder'}`}>{c.id}</Button>
                             ))
                         }
                     </div>
 
-                    <div id="menu-display" className="grid md:grid-cols-4 grid-cols-2 gap-5 mt-5 mb-5">
-                        {isLoadingData && (<Spinner />)}
+                    <div id="menu-display" className="grid md:grid-cols-4 grid-cols-2 gap-5 mt-5 mb-5 justify-center">
 
                         {
                             detailData?.data.menus.map(m => {
@@ -211,6 +210,15 @@ const Detail = () => {
                         }
                     </div>
 
+                    <div className="flex flex-col mb-5">
+                        <b className="text-2xl font-extrabold mb-2">Review</b>
+                        <p className="flex gap-1">
+                            <img src="src/assets/Star.svg" alt={`review-star-overall`} />
+                            <b>{detailData?.data.star}</b>
+                            <b>({detailData?.data.totalReviews} Ulasan)</b>
+                        </p>
+                    </div>
+
                     <div id="review-display" className="grid md:grid-cols-2 gap-3 grid-cols-1 mb-3">
                         {reviewData?.pages.map((page) => {
 
@@ -237,14 +245,20 @@ const Detail = () => {
                                     id="buttonloadmorereview"
                                     variant={'outlineborder'}
                                     onClick={() => fetchNextPage()}
-                                    className="rounded-full w-64 mx-auto"
+                                    className="rounded-full w-[160px] mx-auto text-bold"
                                 >Show More</Button>
                             )
                         }
                     </div>
                 </section>
             </main>
-            <Footer />
+            <Footer
+                className={`
+                ${cartCountState.totalItems > 0 && (
+                        'mb-10'
+                    )
+                    }`}
+            />
             {
                 cartCountState.totalItems > 0 && (
 

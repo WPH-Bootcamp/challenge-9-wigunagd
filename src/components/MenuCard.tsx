@@ -46,18 +46,19 @@ export const MenuCard = ({ cartItemId, menuId, menuName, menuPrice, menuType, qt
                 </AspectRatio>
             </CardHeader>
             <CardFooter className="flex-1 flex md:flex-row md:items-center flex-col justify-between p-4">
-                <div className="md:w-1/2 w-full mb-4">
-                    <p className="line-clamp-2 min-h-[3rem] leading-tight font-medium">
+                <div className="md:w-1/2 w-full mb-2">
+                    <p className="font-medium leading-tight line-clamp-2 min-h-[3rem] md:line-clamp-none md:min-h-0">
                         {menuName}
                     </p>
                     <b>Rp {menuPrice.toLocaleString('id-ID')}</b>
                 </div>
 
-                <div className="md:w-1/2 w-full ">
+                <div className="md:w-1/2 w-full flex md:justify-end">
                     {itemQty === 0 && (
                         <Button
+                        id="btnadddesktop"
                             onClick={buttonOnAddFunc}
-                            className="rounded-full w-full"
+                            className="rounded-full w-full md:max-w-[79px] md:right-0"
                             value={menuId}
                         >
                             Add
@@ -67,7 +68,7 @@ export const MenuCard = ({ cartItemId, menuId, menuName, menuPrice, menuType, qt
                     {itemQty > 0 && (
                         <div className="grid grid-cols-3 items-center justify-between">
                             <Button
-                                variant={'outlineSecondary'}
+                                variant={'outline'}
                                 onClick={() => handleItemQty(-1)}
                                 className="rounded-full w-[36px] text-3xl"
                             >
