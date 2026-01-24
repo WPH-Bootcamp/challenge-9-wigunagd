@@ -117,27 +117,29 @@ const Detail = () => {
                         </div>
                     )}
 
-                    {isLoadingData && (
-                        <div id="skeletonname" className="flex items-center gap-4 w-[120px] h-[120px] ">
-                            <Skeleton className="size-10 shrink-0 rounded-full" />
-                            <div className="grid gap-2">
-                                <Skeleton className="h-4 w-[150px]" />
-                                <Skeleton className="h-4 w-[100px]" />
+                    <div className="mt-3">
+
+                        {isLoadingData && (
+                            <div id="skeletonname" className="flex items-center gap-4 w-[120px] h-[120px] ">
+                                <Skeleton className="size-10 shrink-0 rounded-full" />
+                                <div className="grid gap-2">
+                                    <Skeleton className="h-4 w-[150px]" />
+                                    <Skeleton className="h-4 w-[100px]" />
+                                </div>
                             </div>
-                        </div>
-                    )}
+                        )}
 
-                    {!isLoadingData && (
-                        <RestaurantDisplayCard
-                            logo={detailData?.data.logo}
-                            name={detailData?.data.name}
-                            star={detailData?.data.star}
-                            place={detailData?.data.place}
-                            distance={detailData?.data.distance}
-                        />
-                    )}
+                        {!isLoadingData && (
+                            <RestaurantDisplayCard
+                                logo={detailData?.data.logo}
+                                name={detailData?.data.name}
+                                star={detailData?.data.star}
+                                place={detailData?.data.place}
+                                distance={detailData?.data.distance}
+                            />
+                        )}
 
-                    {isLoadingData && (<Spinner />)}
+                    </div>
 
                     <div id="button-food-cat" className="mt-5">
                         {
@@ -151,6 +153,8 @@ const Detail = () => {
                     </div>
 
                     <div id="menu-display" className="grid md:grid-cols-4 grid-cols-2 gap-5 mt-5 mb-5">
+                        {isLoadingData && (<Spinner />)}
+
                         {
                             detailData?.data.menus.map(m => (
                                 <Card className={`
