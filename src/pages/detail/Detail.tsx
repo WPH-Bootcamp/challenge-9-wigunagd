@@ -7,15 +7,25 @@ import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from "@/com
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { RestaurantDisplayCard } from "@/components/RestaurantDisplayCard";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button";
 import ReviewRestaurantCard from "@/components/ReviewRestaurantCard";
+import type { IAddCartItem } from "../cart/typeCart";
+import { useAddCartItem } from "../cart/hooksCart";
+import { MenuCard } from "@/components/MenuCard";
+import CartSummaryBottomNav from "@/features/cart/CartSummaryBottomNav";
+import { useAppSelector } from "@/services/api/redux";
+import { FiShare2 } from "react-icons/fi";
+
 
 const Detail = () => {
     const urlParams = new URLSearchParams(location.search);
     const restaurantid = urlParams.get('restaurantid');
     const { data: detailData, isLoading: isLoadingData } = useGetDetail({ id: restaurantid ?? '', limitReview: 1 });
     const { data: reviewData, isLoading: isLoadingDataReview, fetchNextPage, hasNextPage: hasNextPageReview, isFetchingNextPage: isFetchingNextPageReview } = useGetReview({ id: restaurantid ?? '', limit: 6 });
+
+
+    const { mutate: mutateAdd } = useAddCartItem();
 
     const [api, setApi] = useState<CarouselApi>();
     const [current, setCurrent] = useState(0);
@@ -26,7 +36,7 @@ const Detail = () => {
         filterVal: string;
     }
 
-    console.log(reviewData, 'review');
+    //console.log(reviewData, 'review');
 
     const uniqueTypes = [...new Set(detailData?.data.menus.map(m => m.type))];
 
@@ -45,6 +55,18 @@ const Detail = () => {
         });
     }, [api]);
 
+    const handleMenuAdd = ({ restaurantId, menuId, quantity }: IAddCartItem) => {
+        mutateAdd({
+            restaurantId: restaurantId,
+            menuId: menuId,
+            quantity: quantity
+        });
+    }
+
+    const cartCountState = useAppSelector((cartState) => cartState.cartCount);
+
+    console.log(cartCountState.itemsInCart, 'Semua isi cart');
+
     return (
         <>
             <NavigationMenu changeOnScroll={false} />
@@ -62,6 +84,7 @@ const Detail = () => {
                                 ))}
                             </CarouselContent>
                         </Carousel>
+
                         <div className="flex justify-center gap-2 mt-4">
                             {detailData?.data.images.map((_, index) => (
                                 <button
@@ -72,6 +95,7 @@ const Detail = () => {
                                 />
                             ))}
                         </div>
+
                     </div>
 
                     {isLoadingData && (
@@ -117,7 +141,7 @@ const Detail = () => {
                         </div>
                     )}
 
-                    <div className="mt-3">
+                    <div className="mt-3 flex items-center justify-between border-b-2 pb-3">
 
                         {isLoadingData && (
                             <div id="skeletonname" className="flex items-center gap-4 w-[120px] h-[120px] ">
@@ -139,6 +163,11 @@ const Detail = () => {
                             />
                         )}
 
+                        <Button className="md:w-[140px] w-[44px] h-[44px]" variant={'outlineborder'}>
+                            <FiShare2 />
+                            <p className="text-lg md:block hidden">Share</p>
+                        </Button>
+
                     </div>
 
                     <div id="button-food-cat" className="mt-5">
@@ -147,7 +176,7 @@ const Detail = () => {
                                 <Button
                                     className="mr-2"
                                     onClick={() => { setSelectedCategory(c.filterVal); }}
-                                    variant={`${selectedCategory === c.filterVal ? 'outlineDefault' : 'outlineSecondary'}`}>{c.id}</Button>
+                                    variant={`${selectedCategory === c.filterVal ? 'outlineDefault' : 'outlineborder'}`}>{c.id}</Button>
                             ))
                         }
                     </div>
@@ -156,32 +185,31 @@ const Detail = () => {
                         {isLoadingData && (<Spinner />)}
 
                         {
-                            detailData?.data.menus.map(m => (
-                                <Card className={`
-                                p-0
-                                ${(selectedCategory === "" || selectedCategory === m.type) ? 'block' : 'hidden'}
-                                `}>
-                                    <CardHeader className="p-0">
-                                        <AspectRatio className="p-0" ratio={1 / 1}>
-                                            <img src={m.image} alt={m.foodName} className="object-cover w-full h-full rounded-t-xl" />
-                                        </AspectRatio>
-                                    </CardHeader>
-                                    <CardFooter>
-                                        <div className="md:flex w-full pb-5">
-                                            <div className="md:w-1/2 w-full flex flex-col">
-                                                <p>{m.foodName}</p>
-                                                <b>{m.price.toLocaleString('id-ID')}</b>
-                                            </div>
-                                            <div className="md:w-1/2 w-full flex justify-end items-center">
-                                                <Button className="rounded-full" value={m.id}>Add</Button>
-                                            </div>
-                                        </div>
-                                    </CardFooter>
-                                </Card>
-                            ))
+                            detailData?.data.menus.map(m => {
+                                const itemInCart = cartCountState.itemsInCart.find(item => item.menu.id === m.id);
+
+                                return (
+                                    <MenuCard
+                                        cartItemId={itemInCart?.id ?? 0}
+                                        key={m.id}
+                                        menuId={m.id}
+                                        menuName={m.foodName}
+                                        menuPrice={m.price}
+                                        menuType={m.type}
+                                        menuImage={m.image}
+                                        qtyinCart={itemInCart?.quantity ?? 0}
+                                        selectedCategoryState={selectedCategory}
+                                        buttonOnAddFunc={() => handleMenuAdd({
+                                            restaurantId: Number(restaurantid),
+                                            menuId: m.id,
+                                            quantity: 1
+                                        })}
+                                    />
+                                );
+
+                            })
                         }
                     </div>
-
 
                     <div id="review-display" className="grid md:grid-cols-2 gap-3 grid-cols-1 mb-3">
                         {reviewData?.pages.map((page) => {
@@ -207,7 +235,7 @@ const Detail = () => {
                             !isFetchingNextPageReview && hasNextPageReview && (
                                 <Button
                                     id="buttonloadmorereview"
-                                    variant={'outlineSecondary'}
+                                    variant={'outlineborder'}
                                     onClick={() => fetchNextPage()}
                                     className="rounded-full w-64 mx-auto"
                                 >Show More</Button>
@@ -217,6 +245,15 @@ const Detail = () => {
                 </section>
             </main>
             <Footer />
+            {
+                cartCountState.totalItems > 0 && (
+
+                    <CartSummaryBottomNav
+                        jmlItemSummary={cartCountState.totalItems}
+                        totalSummary={cartCountState.totalPrice}
+                    />
+                )
+            }
         </>
     )
 }

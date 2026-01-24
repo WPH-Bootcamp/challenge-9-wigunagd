@@ -39,9 +39,6 @@ const MainPage = () => {
 
     const { data: restaurantData } = useGetRestaurant({ limit: 20, range: 20 });
 
-
-    console.log(restaurantData, "Hasil Restoran");
-
     return (
         <>
             <NavigationMenu changeOnScroll={true} />

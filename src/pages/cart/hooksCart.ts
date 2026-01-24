@@ -1,0 +1,38 @@
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import type { IAddCartItem, IAddCartResponse, ICartResponse } from "./typeCart";
+import type { AxiosError } from "axios";
+import { addCartItem, getCartItems, updateCartItem } from "./apiCarts";
+import { toast } from "sonner";
+
+export const useAddCartItem = () => {
+    const queryClient = useQueryClient();
+    return useMutation<IAddCartResponse, AxiosError, IAddCartItem>({
+        mutationFn: (body) => addCartItem(body),
+        onSuccess: (response: IAddCartResponse) => {
+            queryClient.invalidateQueries({ queryKey: ['cart'] });
+
+            toast.success(`${response.data.cartItem.menu.foodName} added`);
+        }
+    });
+}
+
+export const useUpdateCartItem = () => {
+    const queryClient = useQueryClient();
+    return useMutation<IAddCartResponse, AxiosError, IAddCartItem>({
+        mutationFn: (body) => updateCartItem(body),
+        onSuccess: (response) => {
+            queryClient.invalidateQueries({ queryKey: ['cart'] });
+            console.log(response, 'Use Update');
+        },
+        onError: (e) => {
+            console.log(e, 'Error update');
+        }
+    });
+}
+
+export const useGetCartItems = () => {
+    return useQuery<ICartResponse, AxiosError>({
+        queryKey: ['cart'],
+        queryFn: () => getCartItems()
+    });
+}

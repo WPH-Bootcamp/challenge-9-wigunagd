@@ -5,7 +5,7 @@ const initialState: IAuthState = {
     isLoggedin: false,
     userName: "",
     avatar: "",
-    accessToken: ""
+    accessToken: "",
 }
 
 const authSliceLogin = createSlice({

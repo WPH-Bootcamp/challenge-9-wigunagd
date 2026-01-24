@@ -18,7 +18,7 @@ createRoot(document.getElementById('root')!).render(
         <QueryClientProvider client={queryClient}>
           <BrowserRouter>
             <App />
-            <Toaster/>
+            <Toaster style={{ marginTop: '65px' }} position='top-center'/>
           </BrowserRouter>
         </QueryClientProvider>
       </PersistGate>

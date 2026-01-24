@@ -3,6 +3,10 @@ import ButtonCustomLink from "./ButtonCustomLink";
 import { useAppSelector } from "../services/api/redux";
 import { FaBagShopping } from "react-icons/fa6";
 import { baseURLVar } from "../BaseUrlVar";
+import { useGetCartItems } from "@/pages/cart/hooksCart";
+import { useDispatch } from "react-redux";
+import { loadCartSummary } from "@/features/cart/cartCountSlice";
+import type { ICartSummaryCount, ItemsInCart } from "@/features/cart/cartCountType";
 
 interface INavigation {
     changeOnScroll: boolean;
@@ -10,7 +14,7 @@ interface INavigation {
 
 const NavigationMenu = ({ changeOnScroll }: INavigation) => {
     const authState = useAppSelector((state) => state.auth);
-
+    const { data: cartData } = useGetCartItems();
     const [isScrolled, setIsScrolled] = useState(!changeOnScroll);
 
     useEffect(() => {
@@ -29,6 +33,31 @@ const NavigationMenu = ({ changeOnScroll }: INavigation) => {
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
+
+    const dispatchcart = useDispatch();
+    const cartCountState = useAppSelector((cartState) => cartState.cartCount);
+
+    useEffect(() => {
+        if (cartData?.data) {
+            const allItems = cartData.data.cart.flatMap(crt => crt.items);
+            const datacart: ItemsInCart[] = allItems.map(itm => ({
+                id:itm.id,
+                menu: {
+                    id: itm.menu.id
+                },
+                quantity: itm.quantity
+            }));
+
+            const payload: ICartSummaryCount = {
+                totalItems: cartData.data.summary.totalItems ?? 0,
+                totalPrice: cartData.data.summary.totalPrice ?? 0,
+                restaurantCount: cartData.data.summary.restaurantCount ?? 0,
+                itemsInCart: datacart
+            };
+
+            dispatchcart(loadCartSummary(payload));
+        }
+    }, [cartData, dispatchcart]);
 
     return (
         <header className={`
@@ -76,7 +105,8 @@ const NavigationMenu = ({ changeOnScroll }: INavigation) => {
                                 `}>
                                     <a href="/cart" className="mr-3 flex relative pr-3">
                                         <FaBagShopping className="text-4xl" />
-                                        <span id="cartcounter" className="bg-primary text-white rounded-full text-center h-[24px] w-[24px] absolute right-0">0</span>
+                                        <span id="cartcounter"
+                                            className="bg-primary text-white rounded-full text-center h-[24px] w-[24px] absolute right-0">{cartCountState.totalItems ?? 0}</span>
                                     </a>
                                     <img src={authState.avatar ?? './src/assets/tmp-img.png'} alt="Avatar" className="w-[48px] rounded-full mr-2" />
                                     <span className="hidden md:block">{authState.userName}</span>
