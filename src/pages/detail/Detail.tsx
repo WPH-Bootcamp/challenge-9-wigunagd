@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Footer from "../../components/Footer";
 import NavigationMenu from "../../components/NavigationMenu";
-import { useGetDetail } from "./hooksDetail";
+import { useGetDetail, useGetReview } from "./hooksDetail";
 import { Spinner } from "@/components/ui/spinner";
 import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from "@/components/ui/carousel";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
@@ -9,11 +9,13 @@ import { RestaurantDisplayCard } from "@/components/RestaurantDisplayCard";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { Button } from "@/components/ui/button";
+import ReviewRestaurantCard from "@/components/ReviewRestaurantCard";
 
 const Detail = () => {
     const urlParams = new URLSearchParams(location.search);
     const restaurantid = urlParams.get('restaurantid');
     const { data: detailData, isLoading: isLoadingData } = useGetDetail({ id: restaurantid ?? '', limitReview: 1 });
+    const { data: reviewData, isLoading: isLoadingDataReview, fetchNextPage, hasNextPage: hasNextPageReview, isFetchingNextPage: isFetchingNextPageReview } = useGetReview({ id: restaurantid ?? '', limit: 6 });
 
     const [api, setApi] = useState<CarouselApi>();
     const [current, setCurrent] = useState(0);
@@ -23,6 +25,8 @@ const Detail = () => {
         id: string;
         filterVal: string;
     }
+
+    console.log(reviewData, 'review');
 
     const uniqueTypes = [...new Set(detailData?.data.menus.map(m => m.type))];
 
@@ -146,7 +150,7 @@ const Detail = () => {
                         }
                     </div>
 
-                    <div id="menu-display" className="grid grid-cols-4 gap-5 mt-5 mb-5">
+                    <div id="menu-display" className="grid md:grid-cols-4 grid-cols-2 gap-5 mt-5 mb-5">
                         {
                             detailData?.data.menus.map(m => (
                                 <Card className={`
@@ -159,12 +163,12 @@ const Detail = () => {
                                         </AspectRatio>
                                     </CardHeader>
                                     <CardFooter>
-                                        <div className="flex w-full pb-5">
-                                            <div className="w-1/2 flex flex-col">
+                                        <div className="md:flex w-full pb-5">
+                                            <div className="md:w-1/2 w-full flex flex-col">
                                                 <p>{m.foodName}</p>
                                                 <b>{m.price.toLocaleString('id-ID')}</b>
                                             </div>
-                                            <div className="w-1/2 flex justify-end items-center">
+                                            <div className="md:w-1/2 w-full flex justify-end items-center">
                                                 <Button className="rounded-full" value={m.id}>Add</Button>
                                             </div>
                                         </div>
@@ -174,9 +178,38 @@ const Detail = () => {
                         }
                     </div>
 
-                    {/* <pre>
-                        {JSON.stringify(detailData, null, 2)}
-                    </pre> */}
+
+                    <div id="review-display" className="grid md:grid-cols-2 gap-3 grid-cols-1 mb-3">
+                        {reviewData?.pages.map((page) => {
+
+                            // 2. Return the nested map
+                            return page?.data.reviews.map((review) => (
+                                <ReviewRestaurantCard
+                                    key={review.id}
+                                    id={review.id}
+                                    name={review.user.name}
+                                    avatar={review.user.avatar ?? 'src/assets/tmp-img.png'}
+                                    date={review.createdAt}
+                                    star={review.star}
+                                    comment={review.comment}
+                                />
+                            ));
+                        })}
+                    </div>
+
+                    <div className="w-full flex items-center mb-5">
+                        {(isLoadingDataReview || isFetchingNextPageReview) && (<Spinner className="w-12 h-12 mx-auto" />)}
+                        {
+                            !isFetchingNextPageReview && hasNextPageReview && (
+                                <Button
+                                    id="buttonloadmorereview"
+                                    variant={'outlineSecondary'}
+                                    onClick={() => fetchNextPage()}
+                                    className="rounded-full w-64 mx-auto"
+                                >Show More</Button>
+                            )
+                        }
+                    </div>
                 </section>
             </main>
             <Footer />

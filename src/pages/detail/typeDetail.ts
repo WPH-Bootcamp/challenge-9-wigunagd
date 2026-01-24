@@ -42,11 +42,12 @@ export interface RestaurantDetailResponse {
 // type untuk detail restaurant
 
 // type untuk review
-export interface PaginationReview {
-  page: number;
-  limit: number;
-  total: number;
-  totalPages: number;
+export interface ReviewPagination {
+  page?: number;
+  limit?: number;
+  total?: number;
+  totalPages?: number;
+  id?: string;
 }
 
 export interface ReviewUser {
@@ -78,7 +79,7 @@ export interface ReviewResponse {
   success: boolean;
   data: {
     reviews: TransactionReview[];
-    pagination: PaginationReview;
+    pagination: ReviewPagination;
   };
 }
 // type untuk review
