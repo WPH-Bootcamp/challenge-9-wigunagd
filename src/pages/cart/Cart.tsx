@@ -5,6 +5,7 @@ import { useAppSelector } from "@/services/api/redux";
 import { Card, CardContent, CardTitle, CardHeader, CardFooter } from "@/components/ui/card"
 import { IoIosArrowForward } from "react-icons/io";
 import { Button } from "@/components/ui/button";
+import { AspectRatio } from "@radix-ui/react-aspect-ratio";
 
 const Cart = () => {
     const cardData = useAppSelector((cartState) => cartState.cartCount);
@@ -26,11 +27,13 @@ const Cart = () => {
                                             <IoIosArrowForward />
                                         </CardTitle>
                                     </CardHeader>
-                                    <CardContent>
+                                    <CardContent className="flex flex-col gap-3">
                                         {cartItem.items.map(menu => (
                                             <div className="flex justify-between">
-                                                <div className="flex w-1/2">
-                                                    <img className="w-[80px] h-[80px]" src={menu.menu.image} alt={menu.id.toString()} />
+                                                <div className="flex w-1/2 items-center gap-3">
+                                                    <div className="w-[80px] h-[80px] rounded-2xl">
+                                                        <img className="object-cover w-full h-full rounded-2xl" src={menu.menu.image} alt={menu.id.toString()} />
+                                                    </div>
                                                     <div>
                                                         <p>{menu.menu.foodName}</p>
                                                         <b>Rp{menu.menu.price.toLocaleString('id-ID')}</b>
