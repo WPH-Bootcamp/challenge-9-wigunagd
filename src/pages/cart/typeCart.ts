@@ -67,4 +67,13 @@ export interface IAddCartResponse {
         cartItem: IAddCartItemDetail;
     };
 }
+
+export interface IDelCart {
+    id: number | undefined;
+}
+
+export interface IDelCartResponse {
+    success: boolean;
+    message: string;
+}
 // response add to cart

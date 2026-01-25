@@ -6,6 +6,7 @@
   --accent-red: #D9206E; 
   --accent-green: #079455;
   --accent-yellow: #FDB022;
+  --backgroud-primary: #FDFDFD;
 }
 
 
@@ -33,5 +34,9 @@
 }
 
 body{
-  background: #FDFDFD;
+  background: var(--backgroud-primary);
+}
+
+.inset-bg{
+  background: var(--backgroud-primary);
 }

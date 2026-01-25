@@ -1,5 +1,5 @@
 import { apiAxios } from "@/services/api/apiAxios"
-import type { IAddCartItem } from "./typeCart"
+import type { IAddCartItem, IDelCart } from "./typeCart"
 
 export const addCartItem = async ({ restaurantId, menuId, quantity }: IAddCartItem) => {
     const response = await apiAxios.post('/api/cart', {
@@ -17,7 +17,15 @@ export const updateCartItem = async ({ cartItemId, quantity }: IAddCartItem) => 
     return response.data;
 }
 
-/* /api/cart/{id} */
+export const delCart = async ({ id }: IDelCart) => {
+    const response = await apiAxios.delete(`/api/cart${id}`);
+    return response.data;
+}
+
+export const clearCart = async () => {
+    const response = await apiAxios.delete(`/api/cart`);
+    return response.data;
+}
 
 export const getCartItems = async () => {
     const response = await apiAxios.get('/api/cart');

@@ -2,7 +2,7 @@ import { Card, CardFooter, CardHeader } from "@/components/ui/card"
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Button } from "./ui/button";
 import { useEffect, useState } from "react";
-import { useUpdateCartItem } from "@/pages/cart/hooksCart";
+import { useDelCart, useUpdateCartItem } from "@/pages/cart/hooksCart";
 import { useAppSelector } from "@/services/api/redux";
 
 interface IMenuCardProps {
@@ -20,6 +20,7 @@ interface IMenuCardProps {
 export const MenuCard = ({ cartItemId, menuId, menuName, menuPrice, menuType, qtyinCart, menuImage, selectedCategoryState, buttonOnAddFunc }: IMenuCardProps) => {
     const [itemQty, setItemQty] = useState(qtyinCart);
     const { mutate: mutateUpdate } = useUpdateCartItem();
+    const { mutate: mutateDel } = useDelCart();
     const cartCountState = useAppSelector((cartState) => cartState.cartCount);
 
     useEffect(() => {
@@ -30,7 +31,7 @@ export const MenuCard = ({ cartItemId, menuId, menuName, menuPrice, menuType, qt
         const newQty = itemQty + increment;
         setItemQty(newQty);
 
-        if (itemQty >= 0) {
+        if (newQty >= 1) {
             mutateUpdate({
                 cartItemId: cartItemId,
                 quantity: newQty
@@ -39,6 +40,10 @@ export const MenuCard = ({ cartItemId, menuId, menuName, menuPrice, menuType, qt
                     const itemInCart = cartCountState.itemsInCart.find(item => item.menu.id === cartItemId);
                     setItemQty(itemInCart?.quantity ?? qtyinCart);
                 }
+            });
+        } else {
+            mutateDel({
+                id: cartItemId
             });
         }
     }

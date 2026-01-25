@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import type { IAddCartItem, IAddCartResponse, ICartResponse } from "./typeCart";
+import type { IAddCartItem, IAddCartResponse, ICartResponse, IDelCart, IDelCartResponse } from "./typeCart";
 import type { AxiosError } from "axios";
-import { addCartItem, getCartItems, updateCartItem } from "./apiCarts";
+import { addCartItem, clearCart, delCart, getCartItems, updateCartItem } from "./apiCarts";
 import { toast } from "sonner";
 
 export const useAddCartItem = () => {
@@ -26,6 +26,34 @@ export const useUpdateCartItem = () => {
         onError: () => {
             queryClient.invalidateQueries({ queryKey: ['cart'] });
             toast.error("Failed to update the cart");
+        }
+    });
+}
+
+export const useDelCart = () => {
+    const queryClient = useQueryClient();
+    return useMutation<IDelCartResponse, AxiosError, IDelCart>({
+        mutationFn: (body) => delCart(body),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['cart'] });
+            toast.success("Item removed from cart");
+        },
+        onError: () => {
+            queryClient.invalidateQueries({ queryKey: ['cart'] });
+            toast.error("Failed to delete the cart item");
+        }
+    });
+}
+
+export const useClearCart = () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: () => clearCart(),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['cart'] });
+        },
+        onError: () => {
+            queryClient.invalidateQueries({ queryKey: ['cart'] });
         }
     });
 }
