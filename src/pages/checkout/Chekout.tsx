@@ -1,7 +1,7 @@
 import { useAppSelector } from "@/services/api/redux";
 import Footer from "../../components/Footer";
 import NavigationMenu from "../../components/NavigationMenu";
-import { CartItemCard } from "@/components/CartItemCard";
+import { CartItemCard } from "../cart/CartItemCard";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label"

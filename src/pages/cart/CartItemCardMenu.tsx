@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button } from "./ui/button";
+import { Button } from "@/components/ui/button";
 import { useDelCart, useUpdateCartItem } from "@/pages/cart/hooksCart";
 import { useAppSelector } from "@/services/api/redux";
 

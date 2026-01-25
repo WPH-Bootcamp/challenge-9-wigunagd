@@ -1,5 +1,5 @@
 import { Card, CardContent, CardTitle, CardHeader, CardFooter } from "@/components/ui/card"
-import { Button } from "./ui/button";
+import { Button } from "@/components/ui/button";
 import { IoIosArrowForward } from "react-icons/io";
 import { CartItemCardMenu } from "./CartItemCardMenu";
 

@@ -71,7 +71,7 @@ const CheckoutSuccess = ({ checkoutdata }: checkOutSuccessProps) => {
                         </div>
 
                         <Button asChild className="rounded-full md:text-lg text-md font-bold w-full h-[48px]">
-                            <a href="/orders">See My Order</a>
+                            <a href="/profile?orders">See My Order</a>
                         </Button>
                     </div>
                 </Card>

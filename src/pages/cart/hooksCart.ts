@@ -38,7 +38,8 @@ export const useDelCart = () => {
             queryClient.invalidateQueries({ queryKey: ['cart'] });
             toast.success("Item removed from cart");
         },
-        onError: () => {
+        onError: (e) => {
+            console.log(e)
             queryClient.invalidateQueries({ queryKey: ['cart'] });
             toast.error("Failed to delete the cart item");
         }

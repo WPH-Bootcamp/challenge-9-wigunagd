@@ -41,7 +41,7 @@ const NavigationMenu = ({ changeOnScroll }: INavigation) => {
         if (cartData?.data) {
             const allItems = cartData.data.cart.flatMap(crt => crt.items);
             const datacart: ItemsInCart[] = allItems.map(itm => ({
-                id:itm.id,
+                id: itm.id,
                 menu: {
                     id: itm.menu.id
                 },
@@ -111,8 +111,10 @@ const NavigationMenu = ({ changeOnScroll }: INavigation) => {
                                         <span id="cartcounter"
                                             className="bg-primary text-white rounded-full text-center h-[24px] w-[24px] absolute right-0">{cartCountState.totalItems ?? 0}</span>
                                     </a>
-                                    <img src={authState.avatar ?? './src/assets/tmp-img.png'} alt="Avatar" className="w-[48px] rounded-full mr-2" />
-                                    <span className="hidden md:block">{authState.userName}</span>
+                                    <a href="/profile" className="flex items-center">
+                                        <img src={authState.avatar ?? './src/assets/tmp-img.png'} alt="Avatar" className="w-[48px] rounded-full mr-2" />
+                                        <span className="hidden md:block">{authState.userName}</span>
+                                    </a>
                                 </div>
                             )
                     }

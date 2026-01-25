@@ -25,6 +25,7 @@
 .bg-primary {
   background-color: var(--primary-100);
 }
+
 .bg-primary-outline {
   background-color: var(--primary-50);
 }

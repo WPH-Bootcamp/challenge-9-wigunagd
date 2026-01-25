@@ -2,7 +2,8 @@
 import Footer from "../../components/Footer";
 import NavigationMenu from "../../components/NavigationMenu";
 import { useAppSelector } from "@/services/api/redux";
-import { CartItemCard } from "@/components/CartItemCard";
+import { CartItemCard } from "./CartItemCard";
+
 
 const Cart = () => {
     const cardData = useAppSelector((cartState) => cartState.cartCount);
