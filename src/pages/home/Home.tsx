@@ -71,7 +71,8 @@ const MainPage = () => {
                 </div>
 
             </section>
-            <main className="md:px-0 px-4 py-3 w-full md:max-w-[1440px] mx-auto">
+
+            <main className="md:px-0 px-4 py-3 w-full md:max-w-[1440px] mx-auto mb-5">
                 <section id="mainsection">
                     <ul className="flex flex-row flex-wrap md:flex-nowrap justify-between w-full my-5 gap-y-5">
                         {exploreArr.map((ex) => (
@@ -90,7 +91,7 @@ const MainPage = () => {
                         ))}
                     </ul>
 
-                    <div id="contentrestaurant" className="mb-5">
+                    <div id="contentrestaurant">
                         <div className="flex justify-between mb-5">
                             <h3 className="text-lg font-bold">All Restaurant</h3>
                             <p className="text-primary font-extrabold">See all</p>

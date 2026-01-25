@@ -3,8 +3,8 @@ import LoginPage from './features/auth/LoginPage'
 import Home from './pages/home/Home'
 import Cart from './pages/cart/Cart'
 import Checkout from './pages/checkout/Chekout'
-import Orders from './pages/orders/Orders'
 import Detail from './pages/detail/Detail'
+import Profile from './pages/profile/Profile'
 
 function App() {
 
@@ -15,7 +15,7 @@ function App() {
       <Route path='/detail' element={<Detail />} />
       <Route path='/cart' element={<Cart />} />
       <Route path='/checkout' element={<Checkout />} />
-      <Route path='/orders' element={<Orders />} />
+      <Route path='/profile' element={<Profile />} />
     </Routes>
   )
 }

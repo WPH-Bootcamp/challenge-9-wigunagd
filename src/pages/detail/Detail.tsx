@@ -68,7 +68,7 @@ const Detail = () => {
     return (
         <>
             <NavigationMenu changeOnScroll={false} />
-            <main className="pt-23 md:px-0 px-4 w-full md:max-w-[1440px] mx-auto">
+            <main className="pt-23 md:px-0 px-4 w-full md:max-w-[1440px] mx-auto mb-5">
                 <section>
                     <div id="carouselformobile" className="md:hidden block">
                         <Carousel setApi={setApi} className="w-full relative">
@@ -235,7 +235,7 @@ const Detail = () => {
                         })}
                     </div>
 
-                    <div className="w-full flex items-center mb-5">
+                    <div className="w-full flex items-center">
                         {(isLoadingDataReview || isFetchingNextPageReview) && (<Spinner className="w-12 h-12 mx-auto" />)}
                         {
                             !isFetchingNextPageReview && hasNextPageReview && (

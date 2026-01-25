@@ -77,7 +77,7 @@ const NavigationMenu = ({ changeOnScroll }: INavigation) => {
                         )}
                         <h1 className={`
                     ${!isScrolled ? ('text-white') : ('text-black')}
-                    text-3xl font-bold ml-4
+                    text-3xl font-bold ml-4 md:block hidden
                         `}>Foody</h1>
                     </a>
                 </div>
