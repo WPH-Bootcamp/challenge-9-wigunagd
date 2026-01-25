@@ -31,3 +31,7 @@
 .bg-neutral {
   background-color: var(--neutral);
 }
+
+body{
+  background: #FDFDFD;
+}

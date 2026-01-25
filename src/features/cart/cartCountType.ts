@@ -1,3 +1,5 @@
+import type { ICartGroup } from "@/pages/cart/typeCart";
+
 export interface ItemsInCart {
     id: number;
     menu : {
@@ -11,4 +13,5 @@ export interface ICartSummaryCount {
     totalPrice: number;
     restaurantCount: number;
     itemsInCart: ItemsInCart[];
+    cart: ICartGroup[]
 }

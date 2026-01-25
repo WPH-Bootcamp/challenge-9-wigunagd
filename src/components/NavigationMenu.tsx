@@ -48,11 +48,14 @@ const NavigationMenu = ({ changeOnScroll }: INavigation) => {
                 quantity: itm.quantity
             }));
 
+            console.log(cartData.data.cart, '111');
+
             const payload: ICartSummaryCount = {
                 totalItems: cartData.data.summary.totalItems ?? 0,
                 totalPrice: cartData.data.summary.totalPrice ?? 0,
                 restaurantCount: cartData.data.summary.restaurantCount ?? 0,
-                itemsInCart: datacart
+                itemsInCart: datacart,
+                cart: cartData.data.cart
             };
 
             dispatchcart(loadCartSummary(payload));

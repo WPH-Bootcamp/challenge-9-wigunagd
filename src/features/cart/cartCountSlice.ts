@@ -5,7 +5,8 @@ const initialState: ICartSummaryCount = {
     totalItems: 0,
     totalPrice: 0,
     restaurantCount: 0,
-    itemsInCart: []
+    itemsInCart: [],
+    cart: []
 }
 
 const cartCountSlice = createSlice({
@@ -16,7 +17,8 @@ const cartCountSlice = createSlice({
             state.totalItems = action.payload.totalItems;
             state.totalPrice = action.payload.totalPrice;
             state.restaurantCount = action.payload.restaurantCount;
-            state.itemsInCart=action.payload.itemsInCart
+            state.itemsInCart=action.payload.itemsInCart;
+            state.cart = action.payload.cart;
         }
     }
 });

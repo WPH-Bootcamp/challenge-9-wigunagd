@@ -13,7 +13,7 @@ import ReviewRestaurantCard from "@/components/ReviewRestaurantCard";
 import type { IAddCartItem } from "../cart/typeCart";
 import { useAddCartItem } from "../cart/hooksCart";
 import { MenuCard } from "@/components/MenuCard";
-import CartSummaryBottomNav from "@/features/cart/CartSummaryBottomNav";
+import CartSummaryBottomNav from "@/pages/detail/CartSummaryBottomNav";
 import { useAppSelector } from "@/services/api/redux";
 import { FiShare2 } from "react-icons/fi";
 

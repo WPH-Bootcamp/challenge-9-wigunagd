@@ -90,7 +90,7 @@ const MainPage = () => {
                         ))}
                     </ul>
 
-                    <div id="contentrestaurant">
+                    <div id="contentrestaurant" className="mb-5">
                         <div className="flex justify-between mb-5">
                             <h3 className="text-lg font-bold">All Restaurant</h3>
                             <p className="text-primary font-extrabold">See all</p>
