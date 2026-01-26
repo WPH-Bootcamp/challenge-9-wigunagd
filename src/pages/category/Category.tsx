@@ -1,8 +1,6 @@
 import Footer from "@/components/Footer";
 import NavigationMenu from "@/components/NavigationMenu";
-
-// import { Button } from "@/components/ui/button";
-// import { IoFilter } from "react-icons/io5";
+import { IoFilter } from "react-icons/io5";
 import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent } from "@/components/ui/card";
@@ -70,6 +68,8 @@ const Category = () => {
     const [filterPriceMax, setFilterPriceMax] = useState<number | null>();
     const [filterRating, setFilterRating] = useState<number | null>();
 
+    const [showSidebar, setShowSidebar] = useState(false);
+
     const {
         data: restaurantData,
         isLoading: isLoadingRestaurant,
@@ -127,6 +127,10 @@ const Category = () => {
         }
     }
 
+    const handleShowSidebar = () => {
+        setShowSidebar(!showSidebar);
+    }
+
     return (
         <>
             <NavigationMenu changeOnScroll={false} />
@@ -136,7 +140,17 @@ const Category = () => {
 
                 <div className="md:flex grid w-full gap-4">
 
-                    <aside id="aside-menu" className="hidden md:block w-1/4 bg-white shadow py-3 rounded-xl">
+                    <aside id="aside-menu"
+                        className={`bg-white py-3
+                                md:block md:relative md:top-auto md:left-auto md:h-auto md:w-1/4 md:shadow md:rounded-xl
+                                ${showSidebar ? 'fixed top-20 left-0 h-screen shadow-2xl' : 'hidden'}
+                        `}>
+                        <Button 
+                            variant={'outline'}
+                            onClick={() => handleShowSidebar()}
+                            className="rounded-full w-[40px] h-[40px] absolute top-0 -right-12 md:hidden">
+                            X
+                        </Button>
                         <div className="w-full px-5" id="card-profile">
                             <div className="flex flex-col gap-4">
                                 <b>FILTER</b>
@@ -201,6 +215,15 @@ const Category = () => {
                     </aside>
 
                     <div className="md:w-3/4 w-full">
+
+                        <Button 
+                        variant={'outline'} 
+                        onClick={() => handleShowSidebar()}
+                        className="flex justify-between w-full h-[54px] text-lg mb-4 rounded-xl md:hidden">
+                            <b>FILTER</b>
+                            <IoFilter />
+                        </Button>
+
                         <div className="md:grid md:grid-cols-2 flex flex-col gap-3">
                             {
                                 restaurantData?.pages.map((page: RestaurantResponse) => (
