@@ -14,7 +14,7 @@ const ProfileDetail = () => {
             <div className="max-w-[524px]">
                 <Card>
                     <CardContent className="flex flex-col gap-5">
-                        <img src={authState.avatar ?? './src/assets/tmp-img.png'} alt="Avatar" className="w-[64px] rounded-full mr-2" />
+                        <img src={authState.avatar ?? 'https://res.cloudinary.com/dvz5kmwqx/image/upload/v1769413652/avatars/avatar_68_1769413649794.jpg'} alt="Avatar" className="w-[64px] rounded-full mr-2" />
                         <div className="flex justify-between">
                             <span>Name</span>
                             <b>{profileData?.data.name ?? authState.userName}</b>

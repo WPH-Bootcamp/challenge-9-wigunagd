@@ -12,7 +12,7 @@ import { useState } from "react";
 const MainPage = () => {
 
     const [searchOrder, setSearchOrder] = useState('')
-    const { data: restaurantData } = useGetRestaurant({ limit: 20, range: 20 });
+    const { data: restaurantData } = useGetRestaurant({ limit: 20, range: 30, location:'Jakarta' });
 
     const handleSearchOrder = (text: string) => {
         setSearchOrder(text);

@@ -18,7 +18,7 @@ const ReviewRestaurantCard = ({ id, name, avatar, date, star, comment }: IReview
         <Card id={id.toString()}>
             <CardHeader>
                 <CardTitle className="flex items-center">
-                    <img src={avatar} alt={`Avatar-${name}`} className="w-16 h-16 rounded-full" />
+                    <img src={avatar ?? 'src/assets/noimg.png'} alt={`Avatar-${name}`} className="w-16 h-16 rounded-full" />
                     <div className="flex flex-col gap-3 ml-3">
                         <b className="text-lg">{name}</b>
                         <p>{dayjs(date).format('DD MMMM YYYY, HH:mm')}</p>

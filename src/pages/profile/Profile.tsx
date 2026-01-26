@@ -36,7 +36,7 @@ const Profile = () => {
         <>
             <NavigationMenu changeOnScroll={false} />
             <main className="pt-23 md:px-0 px-4 w-full md:max-w-[1440px] mx-auto gap-5 md:flex grid mb-5">
-                <section id="section-navigation" className="flex md:w-1/4 w-full h-fit">
+                <aside id="section-navigation" className="flex md:w-1/4 w-full h-fit">
                     <Card className="w-full " id="card-profile">
                         <CardHeader>
                             <CardTitle className="flex items-center border-b-2 pb-5">
@@ -66,7 +66,7 @@ const Profile = () => {
 
                         </CardContent>
                     </Card>
-                </section>
+                </aside>
 
                 <section id="setion-content" className="md:w-3/4 w-full">
                    {selectedBtn === 1 && (
