@@ -9,7 +9,9 @@ export const useGetRestaurant = (params: IParamGetRestaurantList) => {
         queryKey:['restaurant', params],
         queryFn: ({pageParam}) => getRestaurant({...params, page: pageParam as number}),
         getNextPageParam: (responseData) => {
-            return responseData.data.pagination.page + 1
+            const page = responseData.data.pagination.page ?? 0;
+            const totalPages = responseData.data.pagination.totalPages ?? 0;
+            return page < totalPages ? page + 1 : undefined;
         }
     });
 }

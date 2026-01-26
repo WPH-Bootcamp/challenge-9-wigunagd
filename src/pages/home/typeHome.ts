@@ -35,9 +35,9 @@ export interface RestaurantResponse{
 export interface IParamGetRestaurantList {
     location?: string;
     range?: number;
-    priceMin?: number;
-    priceMax?: number;
-    rating?: number;
+    priceMin?: number | null;
+    priceMax?: number | null;
+    rating?: number | null;
     category?: string;
     limit?: number;
     page?: number;

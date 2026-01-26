@@ -8,11 +8,19 @@ import { Card, CardContent } from "@/components/ui/card"
 import { RestaurantDisplayCard } from "@/components/RestaurantDisplayCard";
 import { exploreArr } from "@/features/filters/Filter";
 import { useState } from "react";
+import { Spinner } from "@/components/ui/spinner";
+import { Button } from "@/components/ui/button";
 
 const MainPage = () => {
 
     const [searchOrder, setSearchOrder] = useState('')
-    const { data: restaurantData } = useGetRestaurant({ limit: 20, range: 30, location:'Jakarta' });
+    const {
+        data: restaurantData,
+        isLoading: isLoadingRestaurant,
+        fetchNextPage,
+        hasNextPage: hasNextPageRestaurant,
+        isFetchingNextPage: isFetchingNextPageRestaurant
+    } = useGetRestaurant({ limit: 6, range: 30, location: 'Jakarta' });
 
     const handleSearchOrder = (text: string) => {
         setSearchOrder(text);
@@ -82,27 +90,42 @@ const MainPage = () => {
                             {
                                 restaurantData?.pages.map((page: RestaurantResponse) => (
                                     page.data.restaurants
-                                    .filter(res => res.name.toLowerCase().includes(searchOrder.toLowerCase()))
-                                    .map((r: Restaurant) => (
-                                        <a href={`/detail?restaurantid=${r.id}`}>
-                                            <Card id={r.name} className="py-0">
-                                                <CardContent className="py-2">
-                                                    <div className="flex">
+                                        .filter(res => res.name.toLowerCase().includes(searchOrder.toLowerCase()))
+                                        .map((r: Restaurant) => (
+                                            <a href={`/detail?restaurantid=${r.id}`}>
+                                                <Card id={r.name} className="py-0">
+                                                    <CardContent className="py-2">
+                                                        <div className="flex">
 
-                                                        <RestaurantDisplayCard
-                                                            logo={r.logo}
-                                                            name={r.name}
-                                                            star={r.star}
-                                                            place={r.place}
-                                                            distance={r.distance}
-                                                        />
+                                                            <RestaurantDisplayCard
+                                                                logo={r.logo}
+                                                                name={r.name}
+                                                                star={r.star}
+                                                                place={r.place}
+                                                                distance={r.distance}
+                                                            />
 
-                                                    </div>
-                                                </CardContent>
-                                            </Card>
-                                        </a>
-                                    ))
+                                                        </div>
+                                                    </CardContent>
+                                                </Card>
+                                            </a>
+                                        ))
                                 ))
+                            }
+
+                        </div>
+
+                        <div className="w-full flex items-center mt-5">
+                            {(isLoadingRestaurant || isFetchingNextPageRestaurant) && (<Spinner className="w-12 h-12 mx-auto" />)}
+                            {
+                                !isFetchingNextPageRestaurant && hasNextPageRestaurant && (
+                                    <Button
+                                        id="buttonloadmorereview"
+                                        variant={'outlineborder'}
+                                        onClick={() => fetchNextPage()}
+                                        className="rounded-full w-[160px] mx-auto text-bold"
+                                    >Show More</Button>
+                                )
                             }
                         </div>
                     </div>

@@ -1,91 +1,131 @@
 import Footer from "@/components/Footer";
 import NavigationMenu from "@/components/NavigationMenu";
 
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Button } from "@/components/ui/button";
-import { IoFilter } from "react-icons/io5";
+// import { Button } from "@/components/ui/button";
+// import { IoFilter } from "react-icons/io5";
 import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent } from "@/components/ui/card";
 import { useGetRestaurant } from "../home/hooksHome";
 import type { Restaurant, RestaurantResponse } from "../home/typeHome";
 import { RestaurantDisplayCard } from "@/components/RestaurantDisplayCard";
+import { useState } from "react";
+import { Spinner } from "@/components/ui/spinner";
+import { Button } from "@/components/ui/button";
 
+const listDistance = [
+    {
+        id: "distance-0",
+        text: "Nearby",
+        distanceVal: 0.1
+    }, {
+        id: "distance-1",
+        text: "Within 1 km",
+        distanceVal: 1
+    }, {
+        id: "distance-3",
+        text: "Within 3 km",
+        distanceVal: 3
+    }, {
+        id: "distance-5",
+        text: "Within 5 km",
+        distanceVal: 5
+    }, {
+        id: "distance-10",
+        text: "Within 10 km",
+        distanceVal: 10
+    }, {
+        id: "distance-20",
+        text: "Within 20 km",
+        distanceVal: 20
+    },
+];
 
-const SidebarContent = () => (
-    <div className="flex flex-col gap-4">
-        <b>FILTER</b>
-        <b>Distance</b>
-        <div className="flex gap-3 items-center">
-            <Checkbox id="label-1" className="h-5 w-5 data-[state=checked]:bg-red-600 data-[state=checked]:border-red-600" />
-            <Label htmlFor="label-1" className="text-md">Nearby</Label>
-        </div>
-        <div className="flex gap-3 items-center">
-            <Checkbox id="label-2" className="h-5 w-5 data-[state=checked]:bg-red-600 data-[state=checked]:border-red-600" />
-            <Label htmlFor="label-2" className="text-md">Within 1 km</Label>
-        </div>
-        <div className="flex gap-3 items-center">
-            <Checkbox id="label-3" className="h-5 w-5 data-[state=checked]:bg-red-600 data-[state=checked]:border-red-600" />
-            <Label htmlFor="label-3" className="text-md">Within 3 km</Label>
-        </div>
-        <div className="flex gap-3 items-center">
-            <Checkbox id="label-4" className="h-5 w-5 data-[state=checked]:bg-red-600 data-[state=checked]:border-red-600" />
-            <Label htmlFor="label-4" className="text-md">Within 5 km</Label>
-        </div>
-
-        <hr />
-
-        <b>Price</b>
-        <div className=" text-black rounded-md pl-2 flex items-center h-[48px] w-full border-2 gap-2">
-            <span className="bg-neutral-100 h-[36px] w-[40px] flex items-center justify-center rounded-sm ">Rp</span>
-            <input
-                id="minimumprice"
-                type="text"
-                className=" w-full h-full outline-none border-none focus:ring-0"
-                placeholder="Minimum Price"
-            />
-        </div>
-
-        <div className=" text-black rounded-md pl-2 flex items-center h-[48px] w-full border-2 gap-2">
-            <span className="bg-neutral-100 h-[36px] w-[40px] flex items-center justify-center rounded-sm ">Rp</span>
-            <input
-                id="maximumprice"
-                type="text"
-                className=" w-full h-full outline-none border-none focus:ring-0"
-                placeholder="Maximum Price"
-            />
-        </div>
-
-        <hr />
-
-        <b>Rating</b>
-        <div className="flex gap-3 items-center">
-            <Checkbox id="rating-5" className="h-5 w-5 data-[state=checked]:bg-red-600 data-[state=checked]:border-red-600" />
-            <Label htmlFor="rating-5" className="flex text-md items-center"><img src="src/assets/Star.svg" alt="star-5" /><span>5</span></Label>
-        </div>
-        <div className="flex gap-3 items-center">
-            <Checkbox id="rating-4" className="h-5 w-5 data-[state=checked]:bg-red-600 data-[state=checked]:border-red-600" />
-            <Label htmlFor="rating-4" className="flex text-md items-center"><img src="src/assets/Star.svg" alt="star-5" /><span>4</span></Label>
-        </div>
-        <div className="flex gap-3 items-center">
-            <Checkbox id="rating-3" className="h-5 w-5 data-[state=checked]:bg-red-600 data-[state=checked]:border-red-600" />
-            <Label htmlFor="rating-3" className="flex text-md items-center"><img src="src/assets/Star.svg" alt="star-5" /><span>3</span></Label>
-        </div>
-        <div className="flex gap-3 items-center">
-            <Checkbox id="rating-2" className="h-5 w-5 data-[state=checked]:bg-red-600 data-[state=checked]:border-red-600" />
-            <Label htmlFor="rating-2" className="flex text-md items-center"><img src="src/assets/Star.svg" alt="star-5" /><span>2</span></Label>
-        </div>
-        <div className="flex gap-3 items-center">
-            <Checkbox id="rating-1" className="h-5 w-5 data-[state=checked]:bg-red-600 data-[state=checked]:border-red-600" />
-            <Label htmlFor="rating-1" className="flex text-md items-center"><img src="src/assets/Star.svg" alt="star-5" /><span>1</span></Label>
-        </div>
-
-    </div>
-);
+const listRating = [
+    {
+        id: "rating-5",
+        ratingVal: 5
+    }, {
+        id: "rating-4",
+        ratingVal: 4
+    }, {
+        id: "rating-3",
+        ratingVal: 3
+    }, {
+        id: "rating-2",
+        ratingVal: 2
+    }, {
+        id: "rating-1",
+        ratingVal: 1
+    },
+];
 
 const Category = () => {
 
-    const { data: restaurantData } = useGetRestaurant({ limit: 20, range: 30, location: 'Jakarta' });
+    /* range, priceMin, priceMax, rating */
+    const defaultrange = 50;
+    const defaultRating = null;
+    const [filterRange, setFilterRange] = useState<number | null>(defaultrange);
+    const [filterPriceMin, setFilterPriceMin] = useState<number | null>();
+    const [filterPriceMax, setFilterPriceMax] = useState<number | null>();
+    const [filterRating, setFilterRating] = useState<number | null>();
+
+    const {
+        data: restaurantData,
+        isLoading: isLoadingRestaurant,
+        fetchNextPage,
+        hasNextPage: hasNextPageRestaurant,
+        isFetchingNextPage: isFetchingNextPageRestaurant
+    } = useGetRestaurant({
+        limit: 6,
+        range: filterRange ?? 30,
+        location: 'Jakarta Pusat',
+        priceMin: filterPriceMin,
+        priceMax: filterPriceMax,
+        rating: filterRating
+    });
+
+    const handleDistance = () => {
+
+        const chkdistance = document.querySelectorAll<HTMLInputElement>('.chkdistance');
+        let selectedrange = defaultrange;
+        chkdistance.forEach((chk, index) => {
+            if (chk.getAttribute('data-state') === 'checked') {
+                selectedrange = listDistance[index].distanceVal;
+            }
+        });
+
+        console.log(selectedrange, 'within');
+
+        setFilterRange(selectedrange);
+    }
+
+    const handleRating = () => {
+        const chkrating = document.querySelectorAll('.rating');
+        let selectedRating: number | null = defaultRating;
+        chkrating.forEach((chk, index) => {
+            if (chk.getAttribute('data-state') === 'checked') {
+                selectedRating = listRating[index].ratingVal;
+            }
+        });
+        setFilterRating(selectedRating);
+    }
+
+    const handleMinPrice = (n: number) => {
+        if (typeof n === "number" && n > 0) {
+            setFilterPriceMin(n);
+        } else {
+            setFilterPriceMin(0);
+        }
+    }
+
+    const handleMaxPrice = (n: number) => {
+        if (typeof n === "number" && n > 0) {
+            setFilterPriceMax(n);
+        } else {
+            setFilterPriceMax(0);
+        }
+    }
 
     return (
         <>
@@ -96,26 +136,68 @@ const Category = () => {
 
                 <div className="md:flex grid w-full gap-4">
 
-                    <div className="md:hidden mb-">
-                        <div className="md:hidden mb-2">
-                            <Sheet>
-                                <SheetTrigger asChild>
-                                    <Button variant="outline" className="flex w-full h-[54px] font-bold justify-between gap-2 rounded-xl">
-                                        FILTER
-                                        <IoFilter size={20} />
-                                    </Button>
-                                </SheetTrigger>
-                                <SheetContent side="left" className="pt-10 px-5">
-                                    <SidebarContent />
-                                </SheetContent>
-                            </Sheet>
-                        </div>
-                    </div>
+                    <aside id="aside-menu" className="hidden md:block w-1/4 bg-white shadow py-3 rounded-xl">
+                        <div className="w-full px-5" id="card-profile">
+                            <div className="flex flex-col gap-4">
+                                <b>FILTER</b>
+                                <b>Distance</b>
+                                {
+                                    listDistance.map(distance => (
+                                        <div className="flex gap-3 items-center">
+                                            <Checkbox
+                                                id={distance.id}
+                                                onCheckedChange={() => handleDistance()}
+                                                className="chkdistance h-5 w-5 data-[state=checked]:bg-red-600 data-[state=checked]:border-red-600" />
+                                            <Label htmlFor={distance.id} className="text-md">{distance.text}</Label>
+                                        </div>
+                                    ))
+                                }
 
-                    <aside className="hidden md:block w-1/4">
-                        <Card className="w-full px-5" id="card-profile">
-                            <SidebarContent />
-                        </Card>
+                                <hr />
+
+                                <b>Price</b>
+                                <div className=" text-black rounded-md pl-2 flex items-center h-[48px] w-full border-2 gap-2">
+                                    <span className="bg-neutral-100 h-[36px] w-[40px] flex items-center justify-center rounded-sm ">Rp</span>
+                                    <input
+                                        id="minimumprice"
+                                        min={0}
+                                        type="number"
+                                        onChange={(e) => handleMinPrice(Number(e.target.value))}
+                                        className=" w-full h-full outline-none border-none focus:ring-0"
+                                        placeholder="Minimum Price"
+                                    />
+                                </div>
+
+                                <div className=" text-black rounded-md pl-2 flex items-center h-[48px] w-full border-2 gap-2">
+                                    <span className="bg-neutral-100 h-[36px] w-[40px] flex items-center justify-center rounded-sm ">Rp</span>
+                                    <input
+                                        id="maximumprice"
+                                        min={0}
+                                        type="number"
+                                        onChange={(e) => handleMaxPrice(Number(e.target.value))}
+                                        className=" w-full h-full outline-none border-none focus:ring-0"
+                                        placeholder="Maximum Price"
+                                    />
+                                </div>
+
+                                <hr />
+
+                                <b>Rating</b>
+                                {
+                                    listRating.map(rating => (
+                                        <div className="flex gap-3 items-center">
+                                            <Checkbox
+                                                id={rating.id}
+                                                onCheckedChange={() => handleRating()}
+                                                className="rating h-5 w-5 data-[state=checked]:bg-red-600 data-[state=checked]:border-red-600" />
+                                            <Label htmlFor={rating.id}
+                                                className="flex text-md items-center"><img src="src/assets/Star.svg" alt="star-5" /><span>{rating.ratingVal}</span></Label>
+                                        </div>
+                                    ))
+                                }
+
+                            </div>
+                        </div>
                     </aside>
 
                     <div className="md:w-3/4 w-full">
@@ -145,6 +227,21 @@ const Category = () => {
                                 ))
                             }
                         </div>
+
+                        <div className="w-full flex items-center mt-5">
+                            {(isLoadingRestaurant || isFetchingNextPageRestaurant) && (<Spinner className="w-12 h-12 mx-auto" />)}
+                            {
+                                !isFetchingNextPageRestaurant && hasNextPageRestaurant && (
+                                    <Button
+                                        id="buttonloadmorereview"
+                                        variant={'outlineborder'}
+                                        onClick={() => fetchNextPage()}
+                                        className="rounded-full w-[160px] mx-auto text-bold"
+                                    >Show More</Button>
+                                )
+                            }
+                        </div>
+
                     </div>
 
                 </div>
