@@ -1,7 +1,7 @@
 import type { AxiosError } from "axios";
-import type { IOrderHistoryResponse, IOrderHistoryResponsePagination } from "./typeOrder";
-import { useInfiniteQuery } from "@tanstack/react-query";
-import { getOrders } from "./apiOrders";
+import type { IOrderHistoryResponse, IOrderHistoryResponsePagination, IReviewRequest } from "./typeOrder";
+import { useInfiniteQuery, useMutation } from "@tanstack/react-query";
+import { getOrders, sendComment } from "./apiOrders";
 
 export const useGetOrders = (params: IOrderHistoryResponsePagination) => {
     return useInfiniteQuery<IOrderHistoryResponse, AxiosError>({
@@ -15,3 +15,25 @@ export const useGetOrders = (params: IOrderHistoryResponsePagination) => {
         }
     });
 }
+
+export const useSendComment = () => {
+    return useMutation<string, AxiosError, IReviewRequest>({
+        mutationFn: (body) => sendComment(body)
+    });
+}
+
+/* 
+export const useDoCheckout = () => {
+    const queryClient = useQueryClient();
+    return useMutation<ICheckoutResponse, AxiosError, ICheckoutPayloadBody>({
+        mutationFn: (body) => doCheckout(body),
+        onSuccess: (response: ICheckoutResponse) => {
+            queryClient.invalidateQueries({ queryKey: ['cart'] });
+            console.log(response);
+        },
+        onError: (e) =>{
+            console.log(e, 'response checkout')
+        }
+    });
+}
+*/

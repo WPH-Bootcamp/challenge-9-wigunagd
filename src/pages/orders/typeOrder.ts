@@ -24,10 +24,21 @@ export interface IOrderRestaurant {
     subtotal: number;
 }
 
+export const orderStatusArr = [
+    { display: "Preparing", value: "preparing" },
+    { display: "Pending", value: "pending" },
+    { display: "On The Way", value: "on_the_way" },
+    { display: "Delivered", value: "delivered" },
+    { display: "Done", value: "done" },
+    { display: "Cancelled", value: "cancelled" },
+] as const;
+
+type TOrderStatus = typeof orderStatusArr[number]["value"];
+
 export interface IOrderHistoryItem {
     id: number;
     transactionId: string;
-    status: "done" | "pending" | "cancelled" | "preparing" | "delivered" | "on_the_way";
+    status: TOrderStatus;
     paymentMethod: string;
     deliveryAddress: string;
     phone: string;
@@ -52,4 +63,13 @@ export interface IOrderHistoryResponse {
             status: string;
         };
     };
+}
+
+// Review
+export interface IReviewRequest {
+    transactionId: string;
+    restaurantId: number;
+    star: number;
+    comment: string;
+    menuIds: number[];
 }
