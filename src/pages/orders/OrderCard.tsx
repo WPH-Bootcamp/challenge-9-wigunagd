@@ -8,7 +8,7 @@ interface IOrderCardProps {
     onReviewClick: (transactionId: string, restaurantId: number, menuIds: number[]) => void
 }
 
-export const OrderCard = ({transactionId, restaurantData, onReviewClick }: IOrderCardProps) => {
+export const OrderCard = ({ transactionId, restaurantData, onReviewClick }: IOrderCardProps) => {
     const listedMenuIds: number[] = [];
 
     return (
@@ -16,8 +16,10 @@ export const OrderCard = ({transactionId, restaurantData, onReviewClick }: IOrde
             <Card key={transactionId}>
                 <CardHeader>
                     <CardTitle className="flex items-center gap-2 pb-3">
-                        <img src="src/assets/Restaurant.svg" alt={restaurantData.restaurant.name} />
-                        <b className="text-lg">{restaurantData.restaurant.name}</b>
+                        <a href={`/detail?restaurantid=${restaurantData.restaurant.id}`} className="flex items-center gap-2">
+                            <img src="src/assets/Restaurant.svg" alt={restaurantData.restaurant.name} />
+                            <b className="text-lg">{restaurantData.restaurant.name}</b>
+                        </a>
                     </CardTitle>
                     <CardContent className="flex flex-col gap-7 pb-3 px-0">
                         {
