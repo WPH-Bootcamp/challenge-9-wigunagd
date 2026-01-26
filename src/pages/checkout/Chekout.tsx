@@ -111,7 +111,7 @@ const Checkout = () => {
                 notes: "Please ring the doorbell"
             }, {
                 onSuccess: (response) => {
-                    console.log(response, 'Berhasil Checkout');
+                    
                     setCheckoutData(response);
                     setDoneCheckout(response.success);
                     mutateClearCart();
@@ -131,7 +131,7 @@ const Checkout = () => {
     const handlePaymentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const p = e.target.value;
         setPayment(p);
-        console.log(p);
+       
     };
 
     return (

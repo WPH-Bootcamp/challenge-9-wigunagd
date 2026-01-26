@@ -95,7 +95,7 @@ const Category = () => {
             }
         });
 
-        console.log(selectedrange, 'within');
+
 
         setFilterRange(selectedrange);
     }

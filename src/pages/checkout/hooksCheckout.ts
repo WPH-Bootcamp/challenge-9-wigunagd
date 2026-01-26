@@ -7,12 +7,11 @@ export const useDoCheckout = () => {
     const queryClient = useQueryClient();
     return useMutation<ICheckoutResponse, AxiosError, ICheckoutPayloadBody>({
         mutationFn: (body) => doCheckout(body),
-        onSuccess: (response: ICheckoutResponse) => {
+        onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['cart'] });
-            console.log(response);
         },
-        onError: (e) =>{
-            console.log(e, 'response checkout')
+        onError: () =>{
+            
         }
     });
 }
