@@ -7,10 +7,16 @@ import type { RestaurantResponse, Restaurant } from "./typeHome";
 import { Card, CardContent } from "@/components/ui/card"
 import { RestaurantDisplayCard } from "@/components/RestaurantDisplayCard";
 import { exploreArr } from "@/features/filters/Filter";
+import { useState } from "react";
 
 const MainPage = () => {
 
+    const [searchOrder, setSearchOrder] = useState('')
     const { data: restaurantData } = useGetRestaurant({ limit: 20, range: 20 });
+
+    const handleSearchOrder = (text: string) => {
+        setSearchOrder(text);
+    }
 
     return (
         <>
@@ -36,6 +42,7 @@ const MainPage = () => {
                         <CiSearch className="text-3xl" />
                         <input
                             id="searchinput"
+                            onChange={(e) => handleSearchOrder(e.target.value)}
                             type="text"
                             className="p-5 w-full h-full outline-none border-none focus:ring-0"
                             placeholder="Search restaurants, food and drink"
@@ -74,7 +81,9 @@ const MainPage = () => {
                         <div id="contentrestaurantlist" className="md:grid md:grid-cols-3 flex flex-col gap-5">
                             {
                                 restaurantData?.pages.map((page: RestaurantResponse) => (
-                                    page.data.restaurants.map((r: Restaurant) => (
+                                    page.data.restaurants
+                                    .filter(res => res.name.toLowerCase().includes(searchOrder.toLowerCase()))
+                                    .map((r: Restaurant) => (
                                         <a href={`/detail?restaurantid=${r.id}`}>
                                             <Card id={r.name} className="py-0">
                                                 <CardContent className="py-2">
