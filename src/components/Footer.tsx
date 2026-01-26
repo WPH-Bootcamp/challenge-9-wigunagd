@@ -1,4 +1,5 @@
 import { baseURLVar } from "../BaseUrlVar";
+import { exploreArr } from "@/features/filters/Filter";
 
 interface FooterProps {
     className?: string
@@ -27,35 +28,7 @@ const Footer = ({className}: FooterProps) => {
             href: "http://www.TikTok.com"
         },
     ];
-
-    const exploreArr = [
-        {
-            id: "All Food",
-            imgSrc: "",
-            href: "#"
-        }, {
-            id: "Nearby",
-            imgSrc: "",
-            href: "#"
-        }, {
-            id: "Discount",
-            imgSrc: "",
-            href: "#"
-        }, {
-            id: "Best Seller",
-            imgSrc: "",
-            href: "#"
-        }, {
-            id: "Delivery",
-            imgSrc: "",
-            href: "#"
-        }, {
-            id: "Lunch",
-            imgSrc: "",
-            href: "#"
-        },
-    ];
-
+    
     const helpArr = [
         {
             id: "How to Order",

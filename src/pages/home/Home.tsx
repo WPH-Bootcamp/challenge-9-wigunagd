@@ -6,36 +6,9 @@ import { useGetRestaurant } from "./hooksHome";
 import type { RestaurantResponse, Restaurant } from "./typeHome";
 import { Card, CardContent } from "@/components/ui/card"
 import { RestaurantDisplayCard } from "@/components/RestaurantDisplayCard";
+import { exploreArr } from "@/features/filters/Filter";
 
 const MainPage = () => {
-
-    const exploreArr = [
-        {
-            id: "All Restaurant",
-            imgSrc: "src/assets/explore-all-restaurant.svg",
-            href: "#"
-        }, {
-            id: "Nearby",
-            imgSrc: "src/assets/explore-nearby.svg",
-            href: "#"
-        }, {
-            id: "Discount",
-            imgSrc: "src/assets/explore-discount.svg",
-            href: "#"
-        }, {
-            id: "Best Seller",
-            imgSrc: "src/assets/explore-best-seller.svg",
-            href: "#"
-        }, {
-            id: "Delivery",
-            imgSrc: "src/assets/explore-delivery.svg",
-            href: "#"
-        }, {
-            id: "Lunch",
-            imgSrc: "src/assets/explore-lunch.svg",
-            href: "#"
-        },
-    ];
 
     const { data: restaurantData } = useGetRestaurant({ limit: 20, range: 20 });
 
@@ -94,7 +67,9 @@ const MainPage = () => {
                     <div id="contentrestaurant">
                         <div className="flex justify-between mb-5">
                             <h3 className="text-lg font-bold">All Restaurant</h3>
-                            <p className="text-primary font-extrabold">See all</p>
+                            <p className="text-primary font-extrabold">
+                                <a href="/category">See all</a>
+                            </p>
                         </div>
                         <div id="contentrestaurantlist" className="md:grid md:grid-cols-3 flex flex-col gap-5">
                             {

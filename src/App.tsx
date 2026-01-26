@@ -5,6 +5,7 @@ import Cart from './pages/cart/Cart'
 import Checkout from './pages/checkout/Chekout'
 import Detail from './pages/detail/Detail'
 import Profile from './pages/profile/Profile'
+import Category from './pages/category/Category'
 
 function App() {
 
@@ -16,6 +17,7 @@ function App() {
       <Route path='/cart' element={<Cart />} />
       <Route path='/checkout' element={<Checkout />} />
       <Route path='/profile' element={<Profile />} />
+      <Route path='/category' element={<Category />} />
     </Routes>
   )
 }
