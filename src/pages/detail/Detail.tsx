@@ -1,0 +1,271 @@
+import { useState, useEffect } from "react";
+import Footer from "../../components/Footer";
+import NavigationMenu from "../../components/NavigationMenu";
+import { useGetDetail, useGetReview } from "./hooksDetail";
+import { Spinner } from "@/components/ui/spinner";
+import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from "@/components/ui/carousel";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { RestaurantDisplayCard } from "@/components/RestaurantDisplayCard";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Card, CardContent } from "@/components/ui/card"
+import { Button } from "@/components/ui/button";
+import ReviewRestaurantCard from "@/components/ReviewRestaurantCard";
+import type { IAddCartItem } from "../cart/typeCart";
+import { useAddCartItem } from "../cart/hooksCart";
+import { MenuCard } from "@/components/MenuCard";
+import CartSummaryBottomNav from "@/pages/detail/CartSummaryBottomNav";
+import { useAppSelector } from "@/services/api/redux";
+import { FiShare2 } from "react-icons/fi";
+
+
+const Detail = () => {
+    const urlParams = new URLSearchParams(location.search);
+    const restaurantid = urlParams.get('restaurantid');
+    const { data: detailData, isLoading: isLoadingData } = useGetDetail({ id: restaurantid ?? '', limitReview: 1 });
+    const { data: reviewData, isLoading: isLoadingDataReview, fetchNextPage, hasNextPage: hasNextPageReview, isFetchingNextPage: isFetchingNextPageReview } = useGetReview({ id: restaurantid ?? '', limit: 6 });
+
+
+    const { mutate: mutateAdd } = useAddCartItem();
+
+    const [api, setApi] = useState<CarouselApi>();
+    const [current, setCurrent] = useState(0);
+    const [selectedCategory, setSelectedCategory] = useState("");
+
+    interface Category {
+        id: string;
+        filterVal: string;
+    }
+
+    const uniqueTypes = [...new Set(detailData?.data.menus.map(m => m.type))];
+
+    const menuCategory: Category[] = [
+        { id: "All Menu", filterVal: "" },
+        ...uniqueTypes.map(type => ({
+            id: type.charAt(0).toUpperCase() + type.slice(1),
+            filterVal: type
+        }))
+    ];
+
+    useEffect(() => {
+        if (!api) return;
+        api.on("select", () => {
+            setCurrent(api.selectedScrollSnap());
+        });
+    }, [api]);
+
+    const handleMenuAdd = ({ restaurantId, menuId, quantity }: IAddCartItem) => {
+        mutateAdd({
+            restaurantId: restaurantId,
+            menuId: menuId,
+            quantity: quantity
+        });
+    }
+
+    const cartCountState = useAppSelector((cartState) => cartState.cartCount);
+
+    return (
+        <>
+            <NavigationMenu changeOnScroll={false} />
+            <main className="pt-23 md:px-0 px-4 w-full md:max-w-[1440px] mx-auto mb-5">
+                <section>
+                    <div id="carouselformobile" className="md:hidden block">
+                        <Carousel setApi={setApi} className="w-full relative">
+                            <CarouselContent>
+                                {detailData?.data.images.map((img, index) => (
+                                    <CarouselItem key={index}>
+                                        <AspectRatio ratio={4 / 3}>
+                                            <img src={img} alt={`Banner ${detailData?.data.name} ${(index + 1).toString()}`} className="object-cover w-full h-full rounded-xl" />
+                                        </AspectRatio>
+                                    </CarouselItem>
+                                ))}
+                            </CarouselContent>
+                        </Carousel>
+
+                        <div className="flex justify-center gap-2 mt-4">
+                            {detailData?.data.images.map((_, index) => (
+                                <button
+                                    key={index}
+                                    onClick={() => api?.scrollTo(index)}
+                                    className={`h-3 w-3 rounded-full transition-all duration-300 ${index === current ? "bg-primary " : "bg-neutral "
+                                        }`}
+                                />
+                            ))}
+                        </div>
+
+                    </div>
+
+                    {isLoadingData && (
+                        <div id="skeletonimg">
+                            <Card className="w-full">
+                                <CardContent>
+                                    <Skeleton className="aspect-video w-full" />
+                                </CardContent>
+                            </Card>
+                        </div>
+                    )}
+
+                    {!isLoadingData && (
+                        <div id="imagesfordesktop" className="hidden md:grid grid-cols-4 grid-rows-2 gap-3 h-[500px]">
+                            {detailData?.data.images.map((img, index, arr) => {
+                                const total = arr.length;
+                                if (index === 0) {
+                                    return (
+                                        <div key={index} className={`${total === 1 ? "col-span-4" : "col-span-2"} row-span-2`}>
+                                            <img src={img} className="w-full h-full object-cover rounded-xl" />
+                                        </div>
+                                    );
+                                }
+
+                                if (index === 1) {
+                                    return (
+                                        <div key={index} className={`${total === 2 ? "col-span-2 row-span-2" : "col-span-2 row-span-1"}`}>
+                                            <img src={img} className="w-full h-full object-cover rounded-xl" />
+                                        </div>
+                                    );
+                                }
+
+                                if (index >= 2 && index < 4) {
+                                    return (
+                                        <div key={index} className="col-span-1 row-span-1">
+                                            <img src={img} className="w-full h-full object-cover rounded-xl" />
+                                        </div>
+                                    );
+                                }
+
+                                return null;
+                            })}
+                        </div>
+                    )}
+
+                    <div className="mt-3 flex items-center justify-between border-b-2 pb-3">
+
+                        {isLoadingData && (
+                            <div id="skeletonname" className="flex items-center gap-4 w-[120px] h-[120px] ">
+                                <Skeleton className="size-10 shrink-0 rounded-full" />
+                                <div className="grid gap-2">
+                                    <Skeleton className="h-4 w-[150px]" />
+                                    <Skeleton className="h-4 w-[100px]" />
+                                </div>
+                            </div>
+                        )}
+
+                        {!isLoadingData && (
+                            <RestaurantDisplayCard
+                                logo={detailData?.data.logo ?? ""}
+                                name={detailData?.data.name ?? ""}
+                                star={detailData?.data.star ?? 1}
+                                place={detailData?.data.place ?? ""}
+                                distance={detailData?.data.distance ?? 0}
+                            />
+                        )}
+
+                        <Button className="md:w-[140px] w-[44px] h-[44px]" variant={'outlineborder'}>
+                            <FiShare2 />
+                            <p className="text-lg md:block hidden">Share</p>
+                        </Button>
+
+                    </div>
+
+                    <div id="button-food-cat" className="mt-5">
+                        {
+                            menuCategory.map(c => (
+                                <Button
+                                    className="mr-2 h-[40px]"
+                                    onClick={() => { setSelectedCategory(c.filterVal); }}
+                                    variant={`${selectedCategory === c.filterVal ? 'outlineDefault' : 'outlineborder'}`}>{c.id}</Button>
+                            ))
+                        }
+                    </div>
+
+                    <div id="menu-display" className="grid md:grid-cols-4 grid-cols-2 gap-5 mt-5 mb-5 justify-center">
+
+                        {
+                            detailData?.data.menus.map(m => {
+                                const itemInCart = cartCountState.itemsInCart.find(item => item.menu.id === m.id);
+
+                                return (
+                                    <MenuCard
+                                        cartItemId={itemInCart?.id ?? 0}
+                                        key={m.id}
+                                        menuId={m.id}
+                                        menuName={m.foodName}
+                                        menuPrice={m.price}
+                                        menuType={m.type}
+                                        menuImage={m.image}
+                                        qtyinCart={itemInCart?.quantity ?? 0}
+                                        selectedCategoryState={selectedCategory}
+                                        buttonOnAddFunc={() => handleMenuAdd({
+                                            restaurantId: Number(restaurantid),
+                                            menuId: m.id,
+                                            quantity: 1
+                                        })}
+                                    />
+                                );
+
+                            })
+                        }
+                    </div>
+
+                    <div className="flex flex-col mb-5">
+                        <b className="text-2xl font-extrabold mb-2">Review</b>
+                        <p className="flex gap-1">
+                            <img src="src/assets/Star.svg" alt={`review-star-overall`} />
+                            <b>{detailData?.data.star}</b>
+                            <b>({detailData?.data.totalReviews} Ulasan)</b>
+                        </p>
+                    </div>
+
+                    <div id="review-display" className="grid md:grid-cols-2 gap-3 grid-cols-1 mb-3">
+                        {reviewData?.pages.map((page) => {
+
+                            // 2. Return the nested map
+                            return page?.data.reviews.map((review) => (
+                                <ReviewRestaurantCard
+                                    key={review.id}
+                                    id={review.id}
+                                    name={review.user.name}
+                                    avatar={review.user.avatar ?? 'src/assets/tmp-img.png'}
+                                    date={review.createdAt}
+                                    star={review.star}
+                                    comment={review.comment}
+                                />
+                            ));
+                        })}
+                    </div>
+
+                    <div className="w-full flex items-center">
+                        {(isLoadingDataReview || isFetchingNextPageReview) && (<Spinner className="w-12 h-12 mx-auto" />)}
+                        {
+                            !isFetchingNextPageReview && hasNextPageReview && (
+                                <Button
+                                    id="buttonloadmorereview"
+                                    variant={'outlineborder'}
+                                    onClick={() => fetchNextPage()}
+                                    className="rounded-full w-[160px] mx-auto text-bold"
+                                >Show More</Button>
+                            )
+                        }
+                    </div>
+                </section>
+            </main>
+            <Footer
+                className={`
+                ${cartCountState.totalItems > 0 && (
+                        'mb-10'
+                    )
+                    }`}
+            />
+            {
+                cartCountState.totalItems > 0 && (
+
+                    <CartSummaryBottomNav
+                        jmlItemSummary={cartCountState.totalItems}
+                        totalSummary={cartCountState.totalPrice}
+                    />
+                )
+            }
+        </>
+    )
+}
+
+export default Detail;
