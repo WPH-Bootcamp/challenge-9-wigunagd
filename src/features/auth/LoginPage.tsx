@@ -9,6 +9,8 @@ import { useAppDispatch, useAppSelector } from "../../services/api/redux";
 import { onSuccessLogin } from "./authSlice";
 import type { IRegErrorResponse, IRegErrorResponseDetails } from "./authType";
 import type { ILoginResponse } from "./authType";
+import { Button } from "@/components/ui/button";
+import { Spinner } from "@/components/ui/spinner";
 
 const LoginPage = () => {
     const urlParams = new URLSearchParams(location.search);
@@ -220,13 +222,16 @@ const LoginPage = () => {
                                         className="my-3"
                                     />
 
-                                    <ButtonCustom
+                                    <Button
                                         disabled={isPendingLogin}
                                         id="btnlogin"
                                         name="btnlogin"
                                         type="submit"
                                         className="bg-primary w-full text-white mt-3 rounded-3xl"
-                                    >Login</ButtonCustom>
+                                    >
+                                        {isPendingLogin && (<Spinner/>)}
+                                        Login
+                                        </Button>
 
                                     <p className={`text-danger text-sm mt-2 text-center font-medium`}>
                                         {loginErrMessage}
@@ -300,13 +305,16 @@ const LoginPage = () => {
                                         {passwordRegisterError}
                                     </p>
 
-                                    <ButtonCustom
+                                    <Button
                                         disabled={isPendingRegister}
                                         id="btnregister"
                                         name="btnregister"
                                         type="submit"
                                         className="bg-primary w-full text-white mt-3 rounded-3xl"
-                                    >Register</ButtonCustom>
+                                    >
+                                        {isPendingRegister && (<Spinner/>)}
+                                        Register
+                                        </Button>
 
                                     <p className={` ${isSuccessRegister ? 'text-success' : 'text-danger'} text-sm mt-2 text-center font-medium`}>
                                         {registerMessage}
