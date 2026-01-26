@@ -40,7 +40,7 @@ const Profile = () => {
                     <Card className="w-full " id="card-profile">
                         <CardHeader>
                             <CardTitle className="flex items-center border-b-2 pb-5">
-                                <img src={authState.avatar ?? './src/assets/tmp-img.png'} alt="Avatar" className="w-[48px] rounded-full mr-2" />
+                                <img src={authState.avatar ?? './src/assets/tmp-img.png'} alt="Avatar" className="w-[48px] h-[48px] rounded-full mr-2" />
                                 <span className="text-lg font-bold">{authState.userName}</span>
 
                             </CardTitle>
