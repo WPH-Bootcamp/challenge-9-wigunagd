@@ -140,7 +140,7 @@ const Checkout = () => {
                 <>
                     <NavigationMenu changeOnScroll={false} />
                     <main className="pt-23 md:px-0 px-4 w-full md:max-w-[1440px] mx-auto flex">
-                        <section id="cart-item-list" className="w-full md:max-w-[1000px] mx-auto my-10">
+                        <section id="cart-item-list" className="w-full md:max-w-[1000px] mx-auto my-10 min-h-[1200px]">
                             <h1 className="text-4xl mb-6">Checkout</h1>
 
                             <div className="flex md:flex-row flex-col gap-5">

@@ -14,7 +14,7 @@ const Cart = () => {
             <main className="pt-23 md:px-0 px-4 w-full md:max-w-[1440px] mx-auto">
                 <section id="cart-item-list" className="w-full md:max-w-[800px] mx-auto my-10">
                     <h1 className="text-4xl mb-6">My Cart</h1>
-                    <div className="flex flex-col gap-5">
+                    <div className="flex flex-col gap-5 min-h-[1200px]">
                         {cardData?.cart?.length > 0 ? (
                             cardData.cart.map((cartItem) => (
                                 <CartItemCard
