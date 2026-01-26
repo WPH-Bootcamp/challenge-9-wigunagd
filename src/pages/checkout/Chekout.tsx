@@ -5,13 +5,13 @@ import { CartItemCard } from "../cart/CartItemCard";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { useState } from "react";
 import CheckoutSuccess from "./CheckoutSuccess";
 import type { ICheckoutResponse, IRestaurantCheckoutOrderBody } from "./checkoutType";
 import { useDoCheckout } from "./hooksCheckout";
 import { useClearCart } from "../cart/hooksCart";
 import { useNavigate } from "react-router-dom";
+import { Spinner } from "@/components/ui/spinner";
 
 /* 
 // dipakai untuk tes
@@ -84,7 +84,7 @@ const Checkout = () => {
         navigate('/cart')
     }
 
-    const { mutate: mutateDoCheckout } = useDoCheckout();
+    const { mutate: mutateDoCheckout, isPending: isPendingCheckout } = useDoCheckout();
     const { mutate: mutateClearCart } = useClearCart();
 
     const saveOrder = () => {
@@ -122,6 +122,12 @@ const Checkout = () => {
         */
 
     }
+
+    const handlePaymentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const p =e.target.value;
+        setPayment(p);
+        console.log(p);
+    };
 
     return (
         <>
@@ -172,9 +178,7 @@ const Checkout = () => {
                                         >
                                             <b className="text-lg">Payment Method</b>
 
-                                            <RadioGroup defaultValue={bankArr[0].nama}
-                                                onValueChange={(value) => setPayment(value)}
-                                                className="flex flex-col gap-5 divide-y divide-gray-200">
+                                            <div className="flex flex-col gap-5 divide-y divide-gray-200">
                                                 {
                                                     bankArr.map(b => (
                                                         <div className="flex items-center gap-3 justify-between pb-5">
@@ -182,11 +186,16 @@ const Checkout = () => {
                                                                 <img src={b.imgurl} alt={b.nama} width={40} className="w-[40px] h-[40px]" />
                                                                 {b.nama}
                                                             </Label>
-                                                            <RadioGroupItem value={b.nama} id={b.id} className="w-6 h-6 " />
+                                                            <input type="radio"
+                                                                value={b.nama}
+                                                                id={b.id}
+                                                                onChange={handlePaymentChange}
+                                                                name="rb-pembayaran"
+                                                                className="w-6 h-6 accent-red-500 " />
                                                         </div>
                                                     ))
                                                 }
-                                            </RadioGroup>
+                                            </div>
 
                                             <div id="left-inset" className="absolute -bottom-3 -left-3 w-6 h-6 inset-bg rounded-full ring-2 ring-gray-200"></div>
                                             <div id="right-inset" className="absolute -bottom-3 -right-3 w-6 h-6 inset-bg rounded-full ring-2 ring-gray-200"></div>
@@ -218,7 +227,13 @@ const Checkout = () => {
                                                 <p>Rp{total.toLocaleString('id-ID')}</p>
                                             </div>
 
-                                            <Button onClick={saveOrder} className="rounded-full text-lg font-bold w-full h-[48px]">Buy</Button>
+                                            <Button
+                                                disabled={isPendingCheckout}
+                                                onClick={saveOrder}
+                                                className="rounded-full text-lg font-bold w-full h-[48px]">
+                                                {isPendingCheckout && (<Spinner />)}
+                                                Buy
+                                            </Button>
                                         </Card>
                                     </div>
 
