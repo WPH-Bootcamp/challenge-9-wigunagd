@@ -26,7 +26,7 @@ const Orders = () => {
     const [menuIds, setMenuIds] = useState<number[]>([]);
     const [isValidToPostReview, setIsValidToPostReview] = useState(false);
 
-    const { mutate: mutateSendCommet } = useSendComment();
+    const { mutate: mutateSendCommet, isPending: isPendingSendReview } = useSendComment();
 
     const handleOpenReview = (transactionId: string, restaurantId: number, menuIds: number[]) => {
         setTransactionId(transactionId);
@@ -72,11 +72,7 @@ const Orders = () => {
         setIsValidToPostReview(valid);
 
         if (valid) {
-            console.log(transactionId, "transactionId");
-            console.log(restaurantId, "restaurantId");
-            console.log(menuIds, "menuIds");
-            console.log(comment, "comment");
-
+            
             mutateSendCommet({
                 transactionId: transactionId,
                 restaurantId: restaurantId,
@@ -87,8 +83,7 @@ const Orders = () => {
                 onSuccess: () => {
                     setIsDialogOpen(false);
                 },
-                onError: (e) => {
-                    console.log(e);
+                onError: () => {
                     toast.error('Looks like something wrong');
                 }
             });
@@ -194,7 +189,12 @@ const Orders = () => {
                                 {!isValidToPostReview && (
                                     <p className="text-red-500 text-md">Please complete the review before submit. Give a rating and add comment.</p>
                                 )}
-                                <Button onClick={() => handleSubmitReview()} className="rounded-full">Send</Button>
+                                <Button 
+                                disabled={isPendingSendReview}
+                                onClick={() => handleSubmitReview()} className="rounded-full">
+                                    {isPendingSendReview && (<Spinner/>)}
+                                    Send
+                                    </Button>
                             </DialogDescription>
                         </DialogHeader>
                     </DialogContent>

@@ -36,8 +36,6 @@ const Detail = () => {
         filterVal: string;
     }
 
-    //console.log(reviewData, 'review');
-
     const uniqueTypes = [...new Set(detailData?.data.menus.map(m => m.type))];
 
     const menuCategory: Category[] = [
