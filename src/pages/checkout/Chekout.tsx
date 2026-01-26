@@ -12,6 +12,7 @@ import { useDoCheckout } from "./hooksCheckout";
 import { useClearCart } from "../cart/hooksCart";
 import { useNavigate } from "react-router-dom";
 import { Spinner } from "@/components/ui/spinner";
+import { toast } from "sonner";
 
 /* 
 // dipakai untuk tes
@@ -77,7 +78,7 @@ const Checkout = () => {
     const total = deliveryFee + serviceFee + cardData.totalPrice
 
     const [doneCheckout, setDoneCheckout] = useState(false);
-    const [payment, setPayment] = useState(bankArr[0].nama);
+    const [payment, setPayment] = useState('');
     const [checkoutData, setCheckoutData] = useState<ICheckoutResponse | null>(null);
 
     if (cardData.totalItems < 1 && !doneCheckout) {
@@ -89,32 +90,36 @@ const Checkout = () => {
 
     const saveOrder = () => {
 
-        const restaurantsData: IRestaurantCheckoutOrderBody[] = cardData.cart.map((cartGroup) => (
-            {
-                restaurantId: cartGroup.restaurant.id,
-                items: cartGroup.items.map((item) => (
-                    {
-                        menuId: item.menu.id,
-                        quantity: item.quantity
-                    }
-                ))
-            }
-        ))
+        if (payment !== "") {
+            const restaurantsData: IRestaurantCheckoutOrderBody[] = cardData.cart.map((cartGroup) => (
+                {
+                    restaurantId: cartGroup.restaurant.id,
+                    items: cartGroup.items.map((item) => (
+                        {
+                            menuId: item.menu.id,
+                            quantity: item.quantity
+                        }
+                    ))
+                }
+            ))
 
-        mutateDoCheckout({
-            restaurants: restaurantsData,
-            deliveryAddress: "Jl. Sudirman No. 25, Jakarta Pusat, 10220",
-            phone: "0812-3456-7890",
-            paymentMethod: payment,
-            notes: "Please ring the doorbell"
-        }, {
-            onSuccess: (response) => {
-                console.log(response, 'Berhasil Checkout');
-                setCheckoutData(response);
-                setDoneCheckout(response.success);
-                mutateClearCart();
-            }
-        });
+            mutateDoCheckout({
+                restaurants: restaurantsData,
+                deliveryAddress: "Jl. Sudirman No. 25, Jakarta Pusat, 10220",
+                phone: "0812-3456-7890",
+                paymentMethod: payment,
+                notes: "Please ring the doorbell"
+            }, {
+                onSuccess: (response) => {
+                    console.log(response, 'Berhasil Checkout');
+                    setCheckoutData(response);
+                    setDoneCheckout(response.success);
+                    mutateClearCart();
+                }
+            });
+        }else{
+            toast.error('Please select payment');
+        }
 
         /* 
         setCheckoutData(DUMMY_RESPONSE);
@@ -124,7 +129,7 @@ const Checkout = () => {
     }
 
     const handlePaymentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const p =e.target.value;
+        const p = e.target.value;
         setPayment(p);
         console.log(p);
     };

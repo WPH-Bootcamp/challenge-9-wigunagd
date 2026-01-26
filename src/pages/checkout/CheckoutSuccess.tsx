@@ -33,27 +33,27 @@ const CheckoutSuccess = ({ checkoutdata }: checkOutSuccessProps) => {
                         <div id="right-inset-cover-1" className="absolute z-2 -bottom-4 -right-5 w-5 h-8 inset-bg rounded-full"></div>
                     </div>
                     <div className="relative flex flex-col border-t-2 border-dashed p-5 gap-5">
-                        <div className="flex justify-between md:text-xl text-md">
+                        <div className="flex justify-between text-md">
                             <p>Date</p>
                             <b>{dayjs(checkoutdata.data.transaction.createdAt).format('DD MMMM YYYY, HH:mm')}</b>
                         </div>
 
-                        <div className="flex justify-between md:text-xl text-md">
+                        <div className="flex justify-between text-md">
                             <p>Payment Method</p>
                             <b>{checkoutdata.data.transaction.paymentMethod}</b>
                         </div>
 
-                        <div className="flex justify-between md:text-xl text-md">
+                        <div className="flex justify-between text-md">
                             <p>Price</p>
                             <b>Rp{checkoutdata.data.transaction.pricing.subtotal.toLocaleString('id-ID')}</b>
                         </div>
 
-                        <div className="flex justify-between md:text-xl text-md">
+                        <div className="flex justify-between text-md">
                             <p>Delivery Fee</p>
                             <b>Rp{checkoutdata.data.transaction.pricing.deliveryFee.toLocaleString('id-ID')}</b>
                         </div>
 
-                        <div className="flex justify-between md:text-xl text-md">
+                        <div className="flex justify-between text-md">
                             <p>Service Fee</p>
                             <b>Rp{checkoutdata.data.transaction.pricing.serviceFee.toLocaleString('id-ID')}</b>
                         </div>
@@ -65,7 +65,7 @@ const CheckoutSuccess = ({ checkoutdata }: checkOutSuccessProps) => {
                     </div>
                     <div className="flex flex-col relative border-t-2 border-dashed p-5 gap-3">
 
-                        <div className="flex justify-between md:text-xl text-md font-bold">
+                        <div className="flex justify-between text-md font-bold">
                             <p>Total</p>
                             <b>Rp{checkoutdata.data.transaction.pricing.totalPrice.toLocaleString('id-ID')}</b>
                         </div>
